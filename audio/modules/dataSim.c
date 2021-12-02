@@ -19,5 +19,19 @@ void multiple_sin(struct data_info* d, int_fast32_t* data, int M) {
 	//printf("\n");
 }
 
+void float_multiple_sin(struct data_info* d, float* data) {
+	float time;
+
+	for(int n=0; n<d->num_samples; n++) {
+		time = (float)n / (float)d->sample_rate;
+
+		for(int i=0; i<d->num_frequencies; i++) {
+			data[n] += sin(2.0*M_PI*d->frequency[i]*time);
+		}
+		//printf("%f\n", data[n]);
+
+	}
+	//printf("\n");
+}
 
 

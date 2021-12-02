@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <math.h>
 
-#include "modules/dataSim.h"
-#include "modules/wav.h"
+#include "../../modules/dataSim.h"
+#include "../../modules/wav.h"
 
 int main() {
 
@@ -31,7 +31,7 @@ int main() {
 		data[i] = 0;
 	}
 
-    char* fname = "data/harmonic.wav";     /* filename to write to */
+    char* fname = "../../data/harmonic.wav";     /* filename to write to */
 	printf("Preparing to write wave w/ following parameters to %s:\n",fname);
     print_wav_info(&w);
 	printf("\n");

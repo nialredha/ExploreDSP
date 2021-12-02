@@ -44,7 +44,7 @@ void dft(double* data, double* amp, int N)
 	
 }
 
-void double_fft(float* data, int N)
+void fft(float* data, int N)
 {
 	int order[N];
 	float sorted_data[N];
@@ -135,8 +135,8 @@ void double_fft(float* data, int N)
 		float temp = sorted_data[n]*sorted_data[n] + 
 					  sorted_data_i[n]*sorted_data_i[n];
 		temp = sqrt(temp);
-		printf("%f\n", temp);
-
+		data[n] = temp;
+		//printf("%f\n", temp);
 	}
 
 	/*
@@ -203,8 +203,8 @@ int reverse_bits(int num, int N)
 	return rev; 
 } 
 
-void wave_gen(float *data, int N) { 
-	float freq = 1.0;						// cycles per second 
+void wave_gen(float *data, int N, float freq) { 
+	//float freq = 1.0;						// cycles per second 
 	int s_freq = N;
 	float time = 1.0;		// seconds 
 	float w = 2*M_PI*(freq/s_freq);		// angular frequency in sample space

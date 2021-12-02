@@ -22,5 +22,7 @@ void single_sin(struct data_info* d, int* data);
 void multiple_sin(struct data_info* d, int_fast32_t* data, int M);
 /* Generate a two frequency beat response */ 
 
+void float_multiple_sin(struct data_info* d, float* data);
+
 
 
