@@ -7,16 +7,18 @@
 
 int main() {
 
-	struct data_info d;	
-	d.frequency[0] = 300.0;
-	d.frequency[1] = 600.0;
-	d.frequency[2] = 900.0;
-	d.frequency[3] = 60.0;
-	//d.frequency[4] = 2200.0;
+	data_info d;	
+	d.frequency[0] = 440.0;
+	d.frequency[1] = 294.0;
+	d.frequency[2] = 349.0;
+	d.frequency[3] = 523.0;
+	d.frequency[4] = 146.8;
+	d.frequency[5] = 74.0;
+	d.frequency[6] = 74.5;
 	d.noise_factor = 0.0;
 	d.sample_rate = 44100;
-	d.num_frequencies = 4;
-	d.num_samples = d.sample_rate*5;	/* 3 second duration */
+	d.num_frequencies = 7;
+	d.num_samples = d.sample_rate*20;	/* 3 second duration */
 	d.num_channels = 0;	
 
 	struct wav_info w;
@@ -31,7 +33,7 @@ int main() {
 		data[i] = 0;
 	}
 
-    char* fname = "../../data/harmonic.wav";     /* filename to write to */
+    char* fname = "beat.wav";     /* filename to write to */
 	printf("Preparing to write wave w/ following parameters to %s:\n",fname);
     print_wav_info(&w);
 	printf("\n");
