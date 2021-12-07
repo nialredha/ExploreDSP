@@ -8,6 +8,7 @@ void convolution_reverb(float* input, float* impulse, float* output,
 		for (int j=0; j<impulse_length; j++) {
 			output[i+j] += input[i] * impulse[j];
 		}
+		//printf("%f\n", output[i]);
 	}
 
 }

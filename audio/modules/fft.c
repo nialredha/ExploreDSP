@@ -181,9 +181,7 @@ void inverse_fft(struct Complex* input, struct Complex* output, int N)
 
 int reverse_bits(int num, int N)
 {
-	/*
-	return bit reversed order
-	*/
+	/* return bit reversed order */
 
 	int rev = 0;
 	int count = 0;
