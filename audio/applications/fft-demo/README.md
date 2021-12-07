@@ -31,7 +31,7 @@ Finally, I will discuss how to overcome the major pitfall of the DFT - i.e.
 computation time - using the FFT.
 
 For the time being, I do not see this resource as educational for anyone but
-me. Ultimately, however, my goal is to explain these topics in a way that is helfpul and
+me. Ultimately, however, my goal is to explain these topics in a way that is
 helpful and interesting to other people.
 
 ## Fourier Transform
