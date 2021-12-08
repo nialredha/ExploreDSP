@@ -7,41 +7,30 @@
 
 int NUMBER_OF_STAGES = 0;
 
-void dft(double* data, double* amp, int N) 
-{
-	double real = 0;
-	double imag = 0;
-	double sum_sqs = 0;
-	double phase[N];
-	
-	for (int k = 0; k<N; ++k) 
-	{
-		for (int n = 0; n<N; ++n)
-		{
-			double angle = (2*M_PI*k*n)/N;
+void dft(float* data, float* amp, int N) { 
 
-			real += data[n] * cos(angle);
-			imag += data[n] * sin(angle);
+	float tau = (2*M_PI)/N;	// part of the "angle" that remains constant
+	float real = 0, imag = 0, sum_sqs = 0;
+
+	float angle, new_angle, phase[N];
+	
+	for(int k = 0; k<N; ++k) {
+		angle = tau*k;
+
+		for(int n = 0; n<N; ++n) {
+			new_angle = angle*n;
+
+			real += data[n] * cos(new_angle);
+			imag += data[n] * sin(new_angle);
 		}
 
-		/*
 		sum_sqs = real*real + imag*imag;
 		amp[k] = sqrt(sum_sqs);
-		phase[k] = atan(imag/real);
-		*/
+		//phase[k] = atan(imag/real);
 
 		real = 0; imag = 0;
 	}
 
-	/*
-	printf("\nDFT Results:\n");
-	for (int i = 0; i<N; ++i) 
-	{
-		printf("%f\n", amp[i]);
-	}
-	printf("\n");
-	*/
-	
 }
 
 void fft(float* data, int N)

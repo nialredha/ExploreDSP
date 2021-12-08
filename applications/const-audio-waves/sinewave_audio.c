@@ -8,16 +8,20 @@
 int main() {
 
 	data_info d;	
-	d.frequency[0] = 440.0;
-	d.frequency[1] = 294.0;
-	d.frequency[2] = 349.0;
-	d.frequency[3] = 523.0;
-	d.frequency[4] = 146.8;
-	d.frequency[5] = 74.0;
-	d.frequency[6] = 74.5;
+	d.frequency[0] = 293.665;	// D  - Octave 4
+	d.frequency[1] = 369.994;	// F# - Octave 4
+	d.frequency[2] = 440.000;	// A  - Octave 4
+	d.frequency[3] = 523.251;	// C  - Octave 5
+	//d.frequency[0] = 440.0;
+	//d.frequency[1] = 294.0;
+	//d.frequency[2] = 349.0;
+	//d.frequency[3] = 523.0;
+	//d.frequency[4] = 146.8;
+	//d.frequency[5] = 74.0;
+	//d.frequency[6] = 74.5;
+	d.num_frequencies = 4;
 	d.noise_factor = 0.0;
 	d.sample_rate = 44100;
-	d.num_frequencies = 7;
 	d.num_samples = d.sample_rate*20;	/* 3 second duration */
 	d.num_channels = 0;	
 
@@ -33,7 +37,7 @@ int main() {
 		data[i] = 0;
 	}
 
-    char* fname = "beat.wav";     /* filename to write to */
+    char* fname = "d7.wav";     /* filename to write to */
 	printf("Preparing to write wave w/ following parameters to %s:\n",fname);
     print_wav_info(&w);
 	printf("\n");

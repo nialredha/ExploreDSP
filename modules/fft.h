@@ -5,12 +5,12 @@ typedef struct Complex
 {
 	double* i;
 	double* r;
-}Complex;
+} Complex;
 
 // function declarations 
 int		reverse_bits(int num, int N);				// bit reversed order calc
 
-void	dft(double* data, double* amp, int N);		// discrete fourier transform
+void	dft(float* data, float* amp, int N);		// discrete fourier transform
 void	fft(float* data, int N);					// radix-2 algorithm 
 void	inverse_fft(struct Complex *input, struct Complex *output, int N);						
 
