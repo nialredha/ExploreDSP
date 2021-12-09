@@ -1,4 +1,4 @@
-# DSP
+# ExploreDSP
 Exploring Digital Signal Processing 
 
 
