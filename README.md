@@ -26,7 +26,7 @@ This is in regard to both the modules/wav.h and modules/wav.c files.
 I did not write the wav module for reading and writing .wav files, but I 
 tweaked it to allow me to read and store wav data. The reason I didn't write 
 my own is simply because I liked this one much better than what I had written. 
-Unfortunately, the website I downloaded it from no longer exists, but look in 
+Unfortunately, the website I downloaded it from on longer exists, but look in 
 modules/wav.h to find more information no who I believe wrote it. 
 
 
