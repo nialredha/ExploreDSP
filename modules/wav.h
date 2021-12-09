@@ -3,9 +3,15 @@
    for some information on the relevant specification.
    This is not as elaborate as the WAVE file support in the "audiofile" package
    but is very simple, self-contained, and probably adequate for most purposes.
-
-   This was not written by me - only slightly modified!
 */
+
+
+/* Note from me:**************************************************************
+
+   This was written by http://oztekin.net/ !!
+   I only slightly modified it by adding read_wav_data()
+
+*****************************************************************************/
 
 #include <stdint.h>
 #include <stdio.h>
