@@ -9,7 +9,7 @@ audio. The three main things I took a look at are:
 
 1. Fourier Transforms (DFT, FFT, IFT)
 2. Reverb using Convolutions (want to eventually use the FFT for this)  
-3. Reading, writing .wav files
+3. Reading/writing WAV files
 
 ## FFT
 I placed a lot of time, after writing the FFT (Radix-2) algorithm, into
