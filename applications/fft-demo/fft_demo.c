@@ -14,33 +14,40 @@
 	doing here, trying to explain to understand. 
 
 	This code is meant to be accompanied with the README file located in the
-	same directory this .c file is located. The point of this .c file is to 
-	give you the opportunity to engage with the algorithms and to showcase
+	same directory this .c file is located in . The point of this .c file is  
+	to give you the opportunity to engage with the algorithms and to showcase
 	the work that I have done. 
 
 	All things considered, I would like this reference to help others 
 	understand fourier transforms in mathematical and in computational terms.
+
+	To build and run: 
+	gcc fft_demo.c ../../modules/dataSim.c ../../modules/fft.c -lm && clear && ./a.out
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <math.h>	// Used for M_PI and for sin() and cos()
+#include <math.h>					// Used for M_PI and for sin() and cos()
 #include <time.h>
 
 #include "../../modules/dataSim.h"	// module to simulate wave data
 #include "../../modules/fft.h"		// module to compute the transform
 
 int main() {
+	
+	clock_t start, stop;
+	double cpu_time_used;
 
 	// Let's start with the Discrete Fourier Transform
 
 	// First let's simulate a 1Hz sine wave with 8 points. To do this, we
-	// need to define the characteristics of our data:
+	// need to define the characteristics of our data using the dataSim 
+	// module I wrote:
 
 	data_obj Data;
 
-	Data.frequency[0] = 1.0;
+	Data.frequency[0] = 1.0;	// 1Hz 
 	Data.num_frequencies = 1;
 
 	Data.sample_rate = 8;	
@@ -64,20 +71,27 @@ int main() {
 
 	float data_dft[Data.num_samples];
 
+	start = clock();
 	dft(Data.data, data_dft, Data.num_samples);
+	stop = clock();
+
+	cpu_time_used = ((double) (stop - start)) / CLOCKS_PER_SEC;
 
 	printf("\n");
+	printf("DFT --------------------------------------------------\n");
 	printf("Transformed 1Hz Sine Wave: sampled at 8Hz for 1 second\n");
 	printf("______________________________________________________\n\n");
 	for(int i=0; i<Data.num_samples; i++) {
 		printf("%d: %f\n", i, data_dft[i]);
 	}
+	printf("\n");
+	printf("Run Time: %f seconds\n", cpu_time_used);
 	printf("______________________________________________________\n\n");
 
 	// As you can see, the transformed data has two peaks: one at index 1 of 
 	// the array and one at index 7 of the array. Now, you might be asking...
 	// How does this work? What do these peaks represent? Why are there two 
-	// peaks? And we will get to all those questions one at a time. 
+	// peaks? Let's talk about it.  
 
 	// The main idea used to transform time-domain data into the frequency-
 	// domain is to walk the signal around a circle at different 
@@ -91,6 +105,24 @@ int main() {
 	// greater than 0Hz. Thus, the amplitudes of the sine wave sum to 0 when
 	// walking the signal around a circle at a frequency of 0.
 	
-	// Alright, now let's look at the  
+	// Alright, now let's look at the next index. Here we walk the signal 
+	// around a signal at a frequency of 1Hz (hmm interesting we are walking
+	// the signal around a circle at the same frequency of the signal itself).
+
+	start = clock();
+	fft(Data.data, Data.num_samples);
+	stop = clock();
+	
+	cpu_time_used = ((double) (stop - start)) / CLOCKS_PER_SEC;
+
+	printf("\n");
+	printf("FFT --------------------------------------------------\n");
+	printf("Transformed 1Hz Sine Wave: sampled at 8Hz for 1 second\n");
+	printf("______________________________________________________\n\n");
+	for(int i=0; i<Data.num_samples; i++) {
+		printf("%d: %f\n", i, Data.data[i]);
+	}
+	printf("Run Time: %f seconds\n", cpu_time_used);
+	printf("______________________________________________________\n\n");
 }
 	
