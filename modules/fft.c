@@ -192,6 +192,7 @@ void cfft(Complex *input, Complex *output, int N)
 		order[n] = rev;
 	}
 
+	//printf("Sorted Data\n");
 	for (int n=0; n<N; ++n)
 	{
 		sorted_data[n] = input->r[order[n]];
@@ -201,7 +202,7 @@ void cfft(Complex *input, Complex *output, int N)
 	// INTIALIZATION 
 	int n = 0, inc = 1, k = 0, k_step = 0, count = 0;
 	
-	float const_exp = 2.0*M_PI/N;
+	float const_exp = 2.0*M_PI / (float)N;
 
 	for (int s=0; s<NUMBER_OF_STAGES; ++s)
 	{
@@ -212,7 +213,7 @@ void cfft(Complex *input, Complex *output, int N)
 		{
 			// top + (bottom * W^k)
 			// top - (bottom * W^k)
-			
+
 			float top = sorted_data[n];
 			float top_i = sorted_data_i[n];
 			float bottom = sorted_data[n+inc] * cos(const_exp*k) + 
@@ -230,7 +231,7 @@ void cfft(Complex *input, Complex *output, int N)
 
 			if (count == inc)
 			{
-				n += (inc +1);
+				n += (inc + 1);
 				count = 0;
 				k = 0;
 			}
@@ -260,17 +261,19 @@ void ifft(Complex* input, Complex* output, int N)
 	for (int i=0; i<N; ++i) 
 	{
 		input->i[i] *= -1.0;	// intended to be the complex conjugate of the data
-		//printf("%f\n", input->r[i]);
+		//printf("%f\n", input->i[i]);
 	}
 
-	cdft(input, output, N);
+	//cdft(input, output, N);
+	NUMBER_OF_STAGES = 0;
+	cfft(input, output, N);
 
 	for (int i=0; i<N; ++i)
 	{
 		//printf("%f\n", output->i[i]);
 
 		output->r[i] *= inverse_N;
-		output->i[i] *= -1.0 * inverse_N;
+		output->i[i] *=  inverse_N;
 	}
 }
 
@@ -294,19 +297,3 @@ int reverse_bits(int num, int N)
 	return rev; 
 } 
 
-// (TODO): Delete this
-void wave_gen(float *data, int N, float freq) { 
-	//float freq = 1.0;						// cycles per second 
-	int s_freq = N;
-	float time = 1.0;		// seconds 
-	float w = 2*M_PI*(freq/s_freq);		// angular frequency in sample space
-
-	// "acquire" the data
-	//printf("Acquired Data:\n");
-	for (int n = 0; n<N; ++n)
-	{
-		data[n] = sin(w*time*n);// + 0.5*sin(w*time*n/2);	
-		//printf("%f\n", data[n]);
-	}
-	//printf("\n");
-}
