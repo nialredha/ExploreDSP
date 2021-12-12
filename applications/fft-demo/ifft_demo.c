@@ -5,12 +5,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 #include "../../modules/dataSim.h"	// module to simulate wave data
 #include "../../modules/fft.h"
 
 void main()
 {
+	float temp;	// used for calculating amplitudes
+	
+	clock_t start, stop;
+	double cpu_time_used;
+
 	data_obj Data;
 
 	Data.frequency[0] = 1.0;	// 1Hz 
@@ -34,6 +40,10 @@ void main()
 
 	wave_gen_f(&Data, Data.data);
 
+	printf("\n");
+	printf("1Hz Sine Wave: sampled at 8Hz for 1 second\n");
+	printf("__________________________________________\n\n");
+
 	for(int i=0; i<Data.num_samples; ++i) 
 	{
 		input.r[i] = Data.data[i];
@@ -42,23 +52,42 @@ void main()
 		printf("%f\n", Data.data[i]);
 	}
 
-	printf("\n");
+	printf("__________________________________________\n\n");
 
+	start = clock();
 	cfft(&input, &output, Data.num_samples);
-	
-	float temp;
+	stop = clock();
+
+	cpu_time_used = ((double)(stop - start)) / CLOCKS_PER_SEC;
+
+	printf("\n");
+	printf("FFT --------------------------------------------------\n");
+	printf("Transformed 1Hz Sine Wave: sampled at 8Hz for 1 second\n");
+	printf("______________________________________________________\n\n");
+
 	for(int i=0; i<Data.num_samples; ++i) 
 	{
 		temp = output.r[i]*output.r[i] + 
 			   output.i[i]*output.i[i];
 		temp = sqrt(temp);
 
-		printf("%f\n", temp);
+		printf("%f, %f\n", output.r[i], output.i[i]);
 	}
+	
+	printf("\n");
+	printf("Run Time: %f seconds\n", cpu_time_used);
+	printf("______________________________________________________\n\n");
+
+	start = clock();
+	ifft(&output, &inverse, Data.num_samples);
+	stop = clock();
+
+	cpu_time_used = ((double)(stop - start)) / CLOCKS_PER_SEC;
 
 	printf("\n");
-
-	ifft(&output, &inverse, Data.num_samples);
+	printf("IFFT -------------------------------------------------\n");
+	printf("Original 1Hz Sine Wave: sampled at 8Hz for 1 second --\n");
+	printf("______________________________________________________\n\n");
 
 	for(int i=0; i<Data.num_samples; ++i) 
 	{
@@ -66,10 +95,13 @@ void main()
 			   inverse.i[i]*inverse.i[i];
 		temp = sqrt(temp);
 
-		printf("%f\n", temp);
+		printf("%f, %f\n", inverse.r[i], inverse.i[i]);
 	}
 
 	printf("\n");
+	printf("Run Time: %f seconds\n", cpu_time_used);
+	printf("______________________________________________________\n\n");
+
 }
 
 
