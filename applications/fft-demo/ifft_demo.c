@@ -1,5 +1,5 @@
 /* To Build:
-   gcc inverse_fft_test.c ../../modules/fft.c ../../modules/dataSim.c -lm
+   gcc -o build/ifft_demo ifft_demo.c ../../modules/fft.c ../../modules/dataSim.c -lm && clear && ./build/ifft_demo
 */
 
 #include <stdio.h>
