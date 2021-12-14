@@ -1,6 +1,27 @@
+/* 
+	The goal is to successfully take audio in a .wav file I made and apply a 
+	reverberation effect using the FFT I built. This is all I want for 
+	Christmas - let the 12 days commense. 
+
+	Currently, I have made the audio and save it to a .wav file (see the 
+	const-audio-waves folder if you are interested). I also have built the 
+	FFT and the IFFT (see the fft-demo folder if you are interested). 
+
+	All that is left for me to do is figure out how to use the FFT for 
+	convolution reverbs...
+		
+		Realistically, I am going to need to add a bunch of functionality to
+		the filter module. Right now it looks like a delay line and comb 
+		is what's in store for me right now. Shouldn't take too long, as long
+		as I don't waste my time writing things that are ultimately going to 
+		be delted :)
+*/
+
 #include <stdlib.h>
+
 #include "../../modules/filters.h"
 #include "../../modules/wav.h"
+#include "../../modules/fft.h"
 
 void find_max_int(struct wav_info* w, int* max_int) {
 /* determine maximum integer expressable in w.bits_per_sample bits, assuming
@@ -29,8 +50,8 @@ void main() {
 	struct wav_info input_info;
 	struct wav_info impulse_info;
 
-    char* input_file = "../../data/input_signals/harmonic.wav";	
-	char* impulse_file = "../../data/impulse_responses/Masonic Lodge.wav";
+    char* input_file = "data/input_signals/harmonic.wav";	
+	char* impulse_file = "data/impulse_responses/Masonic Lodge.wav";
 
     FILE* input = fopen(input_file,"rb");
 	FILE* impulse = fopen(impulse_file, "rb");
@@ -104,7 +125,7 @@ void main() {
 					   input_length, impulse_length);
 
 	
-	char* output_file = "reverb.wav";	// filename to write to
+	char* output_file = "data/reverb.wav";	// filename to write to
 	printf("Preparing to write to %s:\n",output_file);
     print_wav_info(&output_info);
 	printf("\n");
