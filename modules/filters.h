@@ -3,9 +3,25 @@
 
 /* Module to digitally process wav signals using a variety of filters */
 
-//void comb_filter(struct data_info* d, int_fast32_t* data); 
-/* Basic feedforward comb filter using the equation shown on:
-   https://ccrma.stanford.edu/~jos/pasp/Feedforward_Comb_Filters.html */
+/* Delay Line ***************************************************************/
+
+typedef struct delay_line {
+	float *buffer;
+	size_t count;			// i'll take the biggest int you got
+	size_t delay_length;
+} delay_line;
+
+delay_line* init_delay_line(size_t delay_length);
+/* initialize delay_line struct, defining the delay_length, buffer length, 
+   and the setting the count to 0. */
+
+void step_delay_line(delay_line *DL, float input, float *output);
+/* sends the input data through the delay line (operating more or less like 
+   a circular buffer) and outputs the appropriate data based on the 
+   delay_length. If delay_length = 3, the output will equal 0 for the first 
+   three iterations. */
+
+/* Delay Line End ***********************************************************/
 
 void convolution_reverb(float* input, float* impulse, float* output, 
 						int input_length, int impulse_length);
