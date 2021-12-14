@@ -1,4 +1,4 @@
-/*	FFT Demo/Explanation using the radix-2 algorithm implemented by me in C.
+/*	FFT Demo/Explanation using the radix-3 algorithm implemented by me in C.
 	
 	The main goal here is to provide a decent explanation of what a fourier 
 	transform actually is and specifically how both the discrete and fast 
@@ -106,14 +106,33 @@ int main() {
 	// walking the signal around a circle at a frequency of 0.
 	
 	// Alright, now let's look at the next index. Here we walk the signal 
-	// around a signal at a frequency of 1Hz (hmm interesting we are walking
-	// the signal around a circle at the same frequency of the signal itself).
+	// around a signal at a frequency of 1Hz. Because we are walking at the 
+	// same frequency of the original sine wave, the points we sample and 
+	// place on a circle all lie on the positive x-axis. Meaning, if we were
+	// to sum the vectors (which 3B1B relates to finding the location of the 
+	// center of mass of the shape drawn my walking the signal around a 
+	// circle), we would get a very non-zero value. Reference the markdown
+	// document for a better explanation. 
+
+	// Nevertheless, this is what is conceptually happening. We wind or walk
+	// a complicated (or simple) signal at varying frequencies and determine
+	// frequencies where the sum of the vectors created when walking the 
+	// signal around a circle is significantly non-zero. These frequencies 
+	// are what were present in the original signal. Thus, we are able to 
+	// construct a lossless, tranformed signal that can tell you the 
+	// frequencies present in the orignal signal along with their phase and
+	// amplitude. 
+
+	// **DFT EXPLANATION NEEDS WORK
+
+
+	// Now onto the FFT, specifically the Radix-2 Algorithm. 
 
 	start = clock();
 	fft(Data.data, Data.num_samples);
 	stop = clock();
 	
-	cpu_time_used = ((double) (stop - start)) / CLOCKS_PER_SEC;
+	cpu_time_used = ((double)(stop - start)) / CLOCKS_PER_SEC;
 
 	printf("\n");
 	printf("FFT --------------------------------------------------\n");
@@ -124,5 +143,7 @@ int main() {
 	}
 	printf("Run Time: %f seconds\n", cpu_time_used);
 	printf("______________________________________________________\n\n");
+
+	free(Data.data);
 }
 	

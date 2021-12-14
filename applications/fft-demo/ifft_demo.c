@@ -102,6 +102,14 @@ void main()
 	printf("Run Time: %f seconds\n", cpu_time_used);
 	printf("______________________________________________________\n\n");
 
+	free(input.r);
+	free(input.i);
+
+	free(output.r);
+	free(output.i);
+
+	free(inverse.r);
+	free(inverse.i);
 }
 
 
