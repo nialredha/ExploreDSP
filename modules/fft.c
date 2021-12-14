@@ -5,12 +5,13 @@
 
 #include "fft.h"
 
-int NUMBER_OF_STAGES = 0;
+int NUMBER_OF_STAGES = 0;	// essentially log(N) where N is the total number
+							// of data points
 
-// (TODO): Finalize DFT - determine best suited inputs and outputs
+// TODO: Finalize DFT - determine best suited inputs and outputs
 void dft(float* data, float* amp, int N) 
 {
-	float tau = (2*M_PI);	
+	float tau = (2*M_PI);	// 2Pi	
 	float real = 0.0, imag = 0.0, sum_sqs = 0.0;
 
 	float omega, time, angle, phase[N];
@@ -37,6 +38,7 @@ void dft(float* data, float* amp, int N)
 
 }
 
+// TODO: write comments :(
 void cdft(Complex *input, Complex *output, int N) 
 {
 	float tau = (2*M_PI);	
@@ -57,7 +59,7 @@ void cdft(Complex *input, Complex *output, int N)
 	}
 }
 
-// (TODO): write comments :(
+// TODO: write comments :(
 void fft(float* data, int N)
 {
 	int order[N], rev = 0, log_N = N;
@@ -81,7 +83,7 @@ void fft(float* data, int N)
 
 	for (int n=0; n<N; ++n)
 	{
-		rev = reverse_bits(n, N);
+		rev = reverse_bits(n);
 		order[n] = rev;
 	}
 
@@ -188,7 +190,7 @@ void cfft(Complex *input, Complex *output, int N)
 
 	for (int n=0; n<N; ++n)
 	{
-		rev = reverse_bits(n, N);
+		rev = reverse_bits(n);
 		order[n] = rev;
 	}
 
@@ -277,7 +279,7 @@ void ifft(Complex* input, Complex* output, int N)
 	}
 }
 
-int reverse_bits(int num, int N)
+int reverse_bits(int num)
 {
 	/* return bit reversed order */
 
