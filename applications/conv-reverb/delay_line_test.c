@@ -1,24 +1,37 @@
-#include "filters.h"
+#include <stdlib.h>
+#include "../../modules/filters.h"
+#include "../../modules/dataSim.h"
 
-#define INPUT_SIZE 10
+//gcc delay_line_test.c ../../modules/filters.c ../../modules/dataSim.c -lm
 
 int main() 
 {
+	data_obj Data;
+
+	Data.frequency[0] = 1.0;	// 1Hz 
+	Data.num_frequencies = 1;
+
+	Data.sample_rate = 8;	
+	Data.num_samples = Data.sample_rate*1;	// 1 second duration
+
+	Data.data = (float*)malloc(Data.num_samples * sizeof(Data.data)); 
+
+	wave_gen_f(&Data, Data.data);
 
 	delay_line* DL;
 	size_t delay_length = 3;
 
-	float input[INPUT_SIZE] = {1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0};
-	
 	float output = 0.0;
 	
 	DL = init_delay_line(delay_length);
 
-	for (int i=0; i<INPUT_SIZE; ++i)
+	for (int i=0; i<Data.num_samples+delay_length; ++i)
 	{
-		step_delay_line(DL, input[i], &output);
+		step_delay_line(DL, Data.data[i], &output);
 		printf("%f\n", output);
 	}
+
+	free(Data.data);
 
 	return 0;
 }
