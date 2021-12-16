@@ -29,7 +29,7 @@ void read_wav_info(struct wav_info* w, FILE* fp);
    of *fp, so one could immediately begin reading/writing samples */
 
 void read_wav_data(struct wav_info* w, uint16_t *data, FILE* fp);
-/* Read wav_info from *fp, assuming *fp is a PCM format RIFF/WAVE file.
+/*jRead wav_info from *fp, assuming *fp is a PCM format RIFF/WAVE file.
    Leaves the seek position of *fp at the beginning of the data section
    of *fp, so one could immediately begin reading/writing samples */
 
