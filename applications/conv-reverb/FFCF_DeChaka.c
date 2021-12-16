@@ -28,7 +28,7 @@
 	If after reading all of this, you still want to build and risk damaging
 	both your hearing and your headphones, be my guest:
 
-		Build Command: gcc comb_filter_harmonic.c ../../modules/filters.c ../../modules/wav.c -lm	
+		Build Command: gcc FFCF_DeChaka.c ../../modules/filters.c ../../modules/wav.c -lm	
 		Run Command: ./a.out
 */
 
@@ -39,9 +39,15 @@
 #include "../../modules/filters.h"
 
 void find_max_int(struct wav_info* w, int* max_int);
-/**/
+/* Find the max integer a wav file can express - essentially figure out a wav
+   file's bit-depth to determine the largest integer expressable. 
+   
+   For example, if the bit depth was 16 bits, the maximum integer expressable
+   would be 32767 */
+
 void normalize_comb(float* value, float b0, float bm);
-/**/
+/* This is out of commission for the time being - need to think about it for 
+   a second. */
 
 void main() {
 
@@ -59,14 +65,17 @@ void main() {
 	int16_t *input_idata;
 	input_idata = (int16_t *)malloc(sizeof(int16_t) * (input_info.num_samples*input_info.num_channels));
 
-	uint32_t max_input_int;	// used to convert wav data to float
+	uint32_t max_input_int;	// used to convert wav data to floating point
 
 	find_max_int(&input_info, &max_input_int);
-	read_wav_data(&input_info, input_idata, input); 
 
-    fclose(input);
+	// load in input data in integer format
+	read_wav_data(&input_info, input_idata, input);
 
-	float *input_fdata, *output_fdata;
+	// stored the data, so there is no more need for the input file
+    fclose(input);	
+
+	float *input_fdata; 
 	input_fdata = (float *)malloc(sizeof(float)* (input_info.num_samples*input_info.num_channels));
 
 	size_t	count = 0, count2 = 0;	// for printf debugging
@@ -76,15 +85,14 @@ void main() {
 	{
 		input_fdata[i] = ((float)input_idata[i]/(float)max_input_int);
 
-		/*
-		//if (i>(input_info.num_samples*input_info.num_channels) - 10000)
+		/* Debug Stuff 
+
+		// if (i>(input_info.num_samples*input_info.num_channels) - 10000)
 		if ((i<(input_info.num_samples*input_info.num_channels)/2) && (i>((input_info.num_samples*input_info.num_channels)/2) - 10000))
 		{
 			printf("%f\n", input_fdata[i]);
 		}
-		*/
 
-		/*
 		if (i < input_info.num_samples && count <= 1000) 
 		{
 			if (count == 0)
@@ -112,11 +120,11 @@ void main() {
 	ff_comb_filter* FFCF2;
 
 	size_t delay_length = 10500;
-	
-	float b0 = 1.0;
+
+	// feed forward comb filter coefficients
+	float b0 = 1.0;	
 	float bm = 0.9;
 
-	float output = 0.0;
 	
 	FFCF = init_ff_comb_filter(delay_length, b0, bm);
 
@@ -126,36 +134,23 @@ void main() {
     output_info.bits_per_sample = 16;
     output_info.sample_rate = 48000;
     output_info.num_samples = input_info.num_samples;	//+delay_length;
-
+	
+	float *output_fdata;
 	output_fdata = (float *)malloc(sizeof(float)*((output_info.num_samples*output_info.num_channels)));
 
+	// initializing output data to zero
 	for(int i=0; i<output_info.num_samples; i++) {
 		output_fdata[i] = 0.0;
 	}
 
+	float output = 0.0;	// temporary variable to transport the filter output
 	for (int i=0; i<output_info.num_samples; ++i)
 	{
 		step_ff_comb_filter(FFCF, input_fdata[i], &output);
-
-		/*
-		if (output > 1.0)
-		{
-			output /= 2.0;
-		}
-		*/
-
-		/*
-		if (i < delay_length) 
-		{
-			printf("%f, ", output);
-		}
-		*/
-
-		//normalize_comb(&output, FFCF->b0, FFCF->bm);
-
 		output_fdata[i] = output;
 
-		/*
+		/* Debug Filter Output
+
 		if (i < delay_length) 
 		{
 			printf("%f\n", output);
@@ -163,8 +158,8 @@ void main() {
 		*/
 	}
 
-	printf("\n");
-
+	// TODO: Do a better job of this...
+	// Free all memory before computing the second channel (not neccessary)
 	delete_ff_comb_filter(FFCF);
 
 	FFCF2 = init_ff_comb_filter(delay_length, b0, bm);
@@ -172,22 +167,7 @@ void main() {
 	for (int i=output_info.num_samples; i<(output_info.num_samples*output_info.num_channels); ++i)
 	{
 		step_ff_comb_filter(FFCF2, input_fdata[i], &output);
-
-		/*
-		if (output > 1.0)
-		{
-			output /= 2.0;
-		}
-		*/
-
-		/*
-		if (i < output_info.num_samples + delay_length) 
-		{
-			printf("%f, ", output);
-		}
-		*/
-
-		//normalize_comb(&output, FFCF2->b0, FFCF2->bm);
+		output_fdata[i] = output;
 
 		/*
 		if (i < output_info.num_samples + delay_length) 
@@ -196,13 +176,14 @@ void main() {
 		}
 		*/
 
-		output_fdata[i] = output;
 	}
 
+	// TODO: Write a more general, permanent solution to distortion
 	for (int i=0; i<output_info.num_samples*output_info.num_channels; i++)
 	{
 		output_fdata[i] /= 2.0;
-		/*
+
+		/* An Idea... not a particularly good one
 		if (output_fdata[i] > 1.0)
 		{
 			output_fdata[i] = 1.0;
@@ -210,11 +191,10 @@ void main() {
 		*/
 	}
 
-	printf("\n");
-
+	// free all memory 
 	delete_ff_comb_filter(FFCF2);
 
-	char* output_file = "data/FFCF_M10000_b01_bm09.wav";	// filename to write to
+	char* output_file = "data/FFCF_M10000_b01_bm09.wav";
 	printf("Preparing to write to %s:\n",output_file);
     print_wav_info(&output_info);
 	printf("\n");
@@ -228,7 +208,7 @@ void main() {
 	find_max_int(&output_info, &max_output_int);
 
 	float max_output_float = (float)max_output_int;
-	printf("%f\n", max_output_float);
+	// printf("%f\n", max_output_float);
 
     write_wav_hdr(&output_info,output_ptr);
 
@@ -239,33 +219,40 @@ void main() {
 		//fsample[0] = input_fdata[i];//*max_output_float;
 		//fsample[1] = input_fdata[i+output_info.num_samples];//*max_output_float;
 
+		/* Debug to catch distortion
+
 		if (output_fdata[i] > 1.0 || output_fdata[i] < -1.0)
 		{
 			printf("%f\n", output_fdata[i]);
 		}
+		*/
 
+		// Write the channel 1 and channel 2 data to buffer
 		sample[0] = (int_fast16_t)(output_fdata[i]*max_output_float);
 		sample[1] = (int_fast16_t)(output_fdata[i+(output_info.num_samples)]*max_output_float);
 
-		//sample[0] = (int_fast16_t)input_idata[i];
-		//sample[1] = (int_fast16_t)input_idata[i+(output_info.num_samples)];
+		/* More Debug Stuff
 
-		//printf("%f\n", output_fdata[i]);
-		//printf("%f, %f\n", fsample[0], fsample[1]);
-		//printf("%d, %d\n", sample[0], sample[1]);
+		sample[0] = (int_fast16_t)input_idata[i];
+		sample[1] = (int_fast16_t)input_idata[i+(output_info.num_samples)];
 
-		/*
+		printf("%f\n", output_fdata[i]);
+		printf("%f, %f\n", fsample[0], fsample[1]);
+		printf("%d, %d\n", sample[0], sample[1]);
+
 		if (i<10000) 
 		{
-			printf("%d, %d\n", (int_fast16_t)(output_ddata[i]*max_output_double), (int_fast16_t)(output_fdata[i]*max_output_float));
+			printf("%d, %d\n", 
+			(int_fast16_t)(output_ddata[i]*max_output_double), 
+			(int_fast16_t)(output_fdata[i]*max_output_float));
 		}
+
 		*/
 
 		write_sample(&output_info, output_ptr, sample);
 	}
 
 	fclose(output_ptr);
-	free(sample);
 	
 	// Make sure everything is okay
 	FILE* fp = fopen(output_file,"rb");
@@ -276,27 +263,24 @@ void main() {
 
 	printf("\n");
 
-	/*
-	for (int k=0; k<output_length; k++) {
-		printf("%f \n", output[k]);
-	}
-	*/
-
 	free(input_idata);
 	free(input_fdata);
 	free(output_fdata);
+	free(sample);
 }
 
-void find_max_int(struct wav_info* w, int* max_int) {
-/* determine maximum integer expressable in w.bits_per_sample bits, assuming
-twos complement encoding of signed integers */
+void find_max_int(struct wav_info* w, int* max_int) 
+{
+
+	/* determine maximum integer expressable in w.bits_per_sample bits,
+	   assuming twos complement encoding of signed integers */
 
     switch(w->bits_per_sample) {
     case 8:
       *max_int=0x7f;		/* 127 */
       break;
     case 16:
-	  //0x10000;
+	  // 0x10000;			/* 65534 */
       *max_int=0x7fff;		/* 32767 */
       break;
     case 24:
@@ -310,7 +294,8 @@ twos complement encoding of signed integers */
     }
 }
 
-void normalize_comb(float* value, float b0, float bm) {
+void normalize_comb(float* value, float b0, float bm) 
+{
 	
 	float max = b0 + bm;
 	*value = *value / max;
