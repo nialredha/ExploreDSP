@@ -45,7 +45,7 @@ delay_line* init_delay_line(size_t delay_length)
 
 void step_delay_line(delay_line *DL, float input, float *output)
 {
-	if(DL->delay_length != 0)
+	if (DL->delay_length != 0)
 	{
 		// First, set the output to where count is pointing to (initially zero)
 		*output = DL->buffer[DL->count];
@@ -71,7 +71,78 @@ void step_delay_line(delay_line *DL, float input, float *output)
 
 }
 
+void delete_delay_line(delay_line *DL)
+{
+	if (DL == NULL) { return; }
+
+	if (DL->buffer != NULL)
+	{
+		free(DL->buffer);
+		DL->buffer = NULL;
+	}
+
+	free(DL);
+	DL = NULL;
+
+	return;
+}
+
 /* Delay Line End ***********************************************************/
+
+/* Feed-Forward Comb Filter *************************************************/
+
+/* 
+	Got to give credit where credit is due: thank you meoworkshop for your
+	blog on comb filters. If you haven't, check his blog out: 
+
+	https://www.meoworkshop.org/silly-audio-processing-6/
+*/
+
+ff_comb_filter* init_ff_comb_filter(size_t delay_length, float b0, float bm)
+{
+	ff_comb_filter *FFCF = (ff_comb_filter*)malloc(sizeof(ff_comb_filter));
+
+	if (FFCF == NULL) 
+	{
+		return NULL;
+	}
+
+	FFCF->b0 = b0;
+	FFCF->bm = bm;
+	
+	FFCF->DL = init_delay_line(delay_length);
+	if (FFCF->DL == NULL)
+	{
+		free(FFCF);
+		return NULL;
+	}
+
+	return FFCF;
+
+}
+
+void step_ff_comb_filter(ff_comb_filter *FFCF, float input, float *output)
+{
+	float delay_line_output = 0.0;
+	
+	step_delay_line(FFCF->DL, input, &delay_line_output);
+
+	*output = (delay_line_output * FFCF->bm) + (input * FFCF->b0);
+}
+
+void delete_ff_comb_filter(ff_comb_filter *FFCF)
+{
+	if (FFCF == NULL) { return; }
+
+	delete_delay_line(FFCF->DL);
+
+	free(FFCF);
+	FFCF = NULL; 
+
+	return;
+}
+
+/* Feed-Forward Comb Filter End *********************************************/
 
 void convolution_reverb(float* input, float* impulse, float* output, 
 						int input_length, int impulse_length) {
