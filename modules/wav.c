@@ -215,18 +215,19 @@ void read_wav_data(struct wav_info *w, uint16_t *data, FILE *fp) {
       fread(x,1,4,fp);
       // See if these four bytes are the ASCII codes for "data"
       if((x[0] == 0x64) && (x[1] == 0x61) && (x[2] == 0x74) && (x[3] == 0x61)) {
-         // Found the "data" subchunk
-         fread(x,1,4,fp);
-         data_size = x[0] | (x[1] << 8) | (x[2] << 16) | (x[3] << 24);
+		// Found the "data" subchunk
+        fread(x,1,4,fp);
+        data_size = x[0] | (x[1] << 8) | (x[2] << 16) | (x[3] << 24);
 
-		 uint32_t num_of_samples = data_size/bytes_per_sample;
-		 uint16_t y[num_of_samples];
-		 fread(y, bytes_per_sample, num_of_samples, fp);
+		size_t num_of_samples = w->num_samples * w->num_channels;
+		uint16_t y[2];
 
-		 for (int i=0; i<num_of_samples; i+=2) {
-			data[i] = y[i];
-			data[i+1] = y[i+1];
-		 }
+		for (int i=0; i<w->num_samples; ++i) 
+		{
+			fread(y, bytes_per_sample, 2, fp);
+			data[i] = y[0];
+			data[i+(w->num_samples)] = y[1];
+		}
 
          // Now we're done reading from *fp...
          break;
@@ -338,7 +339,7 @@ void print_wav_info(const struct wav_info *w) {
    else printf("Duration: %i + %i/%i s\n",duration,r,(int) w->sample_rate);
 }
 
-void write_sample(const struct wav_info* w, FILE* fp, const int_fast32_t* sample) {
+void write_sample(const struct wav_info* w, FILE* fp, const int_fast16_t* sample) {
    // We'll assume w->bits_per_sample is divisible by 8, otherwise
    // one should do bytes_per_sample++ and make sure
    // the last (w->bits_per_sample % 8) bits of each sample[i] are zero

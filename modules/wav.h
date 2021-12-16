@@ -42,7 +42,7 @@ void write_wav_hdr(const struct wav_info* w, FILE* fp);
 void print_wav_info(const struct wav_info* w);
 /* Prints information from *w to stdout */
 
-void write_sample(const struct wav_info* w, FILE* fp, const int_fast32_t* sample);
+void write_sample(const struct wav_info* w, FILE* fp, const int_fast16_t* sample);
 /* Write a sample to *fp in the correct Little Endian format.
    sample should be an array with w->num_channels elements.
    Note that we use the int_fast32_t datatype to hold samples, which should be
