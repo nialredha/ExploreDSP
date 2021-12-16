@@ -58,6 +58,7 @@ void normalize_wave(double* value, int num_frequencies) {
 	double range = max - min;
 
 	*value = (*value - min) / range;
+	//*value = *value / max;
 }
 
 
