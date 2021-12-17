@@ -71,6 +71,15 @@ void step_delay_line(delay_line *DL, float input, float *output)
 
 }
 
+void current_delay_line(delay_line *DL, float *output)
+{
+	// TODO: need to implement some error checking
+	if (DL == NULL) { return; }	
+	if (DL->count <= DL->delay_length)
+	{
+		*output = DL->buffer[DL->count];
+	}
+}
 void delete_delay_line(delay_line *DL)
 {
 	if (DL == NULL) { return; }
@@ -143,6 +152,138 @@ void delete_ff_comb_filter(ff_comb_filter *FFCF)
 }
 
 /* Feed-Forward Comb Filter End *********************************************/
+
+/* Feedback Comb Filter *************************************************/
+
+/* 
+	Got to give credit where credit is due: thank you meoworkshop for your
+	blog on comb filters. If you haven't, check his blog out: 
+
+	https://www.meoworkshop.org/silly-audio-processing-6/
+*/
+
+fb_comb_filter* init_fb_comb_filter(size_t delay_length, float b0, float am)
+{
+	fb_comb_filter *FBCF = (fb_comb_filter*)malloc(sizeof(fb_comb_filter));
+
+	if (FBCF == NULL) 
+	{
+		return NULL;
+	}
+
+	FBCF->b0 = b0;
+	FBCF->am = am;
+	
+	FBCF->DL = init_delay_line(delay_length);
+	if (FBCF->DL == NULL)
+	{
+		free(FBCF);
+		return NULL;
+	}
+
+	return FBCF;
+
+}
+
+void step_fb_comb_filter(fb_comb_filter *FBCF, float input, float *output)
+{
+	float delay_line_output = 0.0;
+	
+	current_delay_line(FBCF->DL, &delay_line_output);
+
+	*output = (delay_line_output * FBCF->am) + input;
+
+	step_delay_line(FBCF->DL, *output, &delay_line_output);
+
+	*output = *output * FBCF->b0;
+}
+
+void delete_fb_comb_filter(fb_comb_filter *FBCF)
+{
+	if (FBCF == NULL) { return; }
+
+	delete_delay_line(FBCF->DL);
+
+	free(FBCF);
+	FBCF = NULL; 
+
+	return;
+}
+
+/* Feedback Comb Filter End *************************************************/
+
+
+/* Allpass Comb Filter *****************************************************/
+
+/* 
+	Got to give credit where credit is due: thank you meoworkshop for your
+	blog on comb filters. If you haven't, check his blog out: 
+
+
+	https://www.meoworkshop.org/silly-audio-processing-6/
+*/
+
+ap_comb_filter* init_ap_comb_filter(size_t delay_length, float b0, float am)
+{
+	ap_comb_filter *APCF = (ap_comb_filter*)malloc(sizeof(ap_comb_filter));
+
+	if (APCF == NULL) 
+	{
+		return NULL;
+	}
+
+	APCF->FFCF = init_ff_comb_filter(delay_length, b0, 1.0);
+	if (APCF->FFCF == NULL) 
+	{
+		free(APCF);
+		return NULL;
+	}
+
+	APCF->FBCF = init_fb_comb_filter(delay_length, 1.0, am);
+	if (APCF->FBCF == NULL)
+	{
+		free(APCF);
+		return NULL;
+	}
+	
+	return APCF;
+
+}
+
+void step_ap_comb_filter(ap_comb_filter *APCF, float input, float *output)
+{
+	
+	float delay_line_output = 0.0;
+	float delay_line_output_2 = 0.0;
+
+	step_delay_line(APCF->FFCF->DL, input, &delay_line_output);
+
+	*output = (delay_line_output * APCF->FFCF->bm) + (input * APCF->FFCF->b0);
+
+	
+	current_delay_line(APCF->FBCF->DL, &delay_line_output_2);
+
+	*output = (delay_line_output_2 * APCF->FBCF->am) + *output;
+
+	step_delay_line(APCF->FBCF->DL, *output, &delay_line_output_2);
+
+	*output = *output * APCF->FBCF->b0;
+}
+
+void delete_ap_comb_filter(ap_comb_filter *APCF)
+{
+	if (APCF == NULL) { return; }
+
+	delete_ff_comb_filter(APCF->FFCF);
+	delete_fb_comb_filter(APCF->FBCF);
+
+	free(APCF);
+	APCF = NULL; 
+
+	return;
+}
+
+/* Allpass Comb Filter End **************************************************/
 
 void convolution_reverb(float* input, float* impulse, float* output, 
 						int input_length, int impulse_length) {
