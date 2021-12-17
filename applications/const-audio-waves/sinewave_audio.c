@@ -1,3 +1,17 @@
+/* 
+	Constructing chords out of pure sine waves and writing to .WAV to then be 
+	listened to or fiddled with using the filters I am building. 
+
+	That said, I have realized that pure sine waves are sonicially boring and 
+	do not do a good job of showcasing different effects. So, while this 
+	brought me to building a data simulation module and to better 
+	understanding how to read, edit, and write .WAV files, I don't think I am
+	going to use it for the convolution reverb application...
+
+	I might use it as an initial test of my FFT on .WAV file data (instead of
+	purely simulated data), but we will see. 
+*/
+
 #include <stdint.h>
 #include <stdio.h>
 #include <math.h>
