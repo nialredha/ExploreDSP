@@ -8,7 +8,7 @@ likely want to change the name of the application to something more general,
 like "Reverberation". 
 
 ## Acronyms 
-Here are some reoccurent acronyms I use for file naming and within the .c files
+Here are some recurrent acronyms I use for file naming and within the .c files
 themselves:
 
 DL - Delay Line
