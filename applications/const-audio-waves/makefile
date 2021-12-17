@@ -1,3 +1,3 @@
 harmonic: ../../modules/wav.c ../../modules/dataSim.c sinewave_audio.c
-	gcc -o build/d7_test ../../modules/wav.c ../../modules/dataSim.c sinewave_audio.c -lm
+	gcc -o build/sinewave_audio ../../modules/wav.c ../../modules/dataSim.c sinewave_audio.c -lm
 
