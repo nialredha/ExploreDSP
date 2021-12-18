@@ -18,3 +18,11 @@ FFCF - Feed-Forward Comb Filter
 FBCF - Feed-Back Comb Filter
 
 APCF - All-Pass Comb Filter
+
+## TODO
+1. Consolidate the different comb filter implementations... a lof of repeated
+   code. Not too worried about right now, so maybe later. 
+2. Write universal normalization funciton for all filter outputs to prevent
+   distortion.
+
+
