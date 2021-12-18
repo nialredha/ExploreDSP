@@ -253,6 +253,13 @@ ap_comb_filter* init_ap_comb_filter(size_t delay_length, float b0, float am)
 void step_ap_comb_filter(ap_comb_filter *APCF, float input, float *output)
 {
 	
+	float output_2 = 0.0;
+
+	step_ff_comb_filter(APCF->FFCF, input, &output_2);
+	step_fb_comb_filter(APCF->FBCF, output_2, output);
+
+	/* I was being stupid here, and am leaving it as a reminder.
+
 	float delay_line_output = 0.0;
 	float delay_line_output_2 = 0.0;
 
@@ -268,6 +275,8 @@ void step_ap_comb_filter(ap_comb_filter *APCF, float input, float *output)
 	step_delay_line(APCF->FBCF->DL, *output, &delay_line_output_2);
 
 	*output = *output * APCF->FBCF->b0;
+
+	*/
 }
 
 void delete_ap_comb_filter(ap_comb_filter *APCF)
@@ -284,6 +293,85 @@ void delete_ap_comb_filter(ap_comb_filter *APCF)
 }
 
 /* Allpass Comb Filter End **************************************************/
+
+/* Shroeder Reverberator ***************************************************/
+
+shroeder_reverberator* init_shroeder_reverberator(size_t *ap_delay_lengths, size_t *fb_delay_lengths, float ap_gain, float *fb_gains)
+{
+
+	shroeder_reverberator *SR = (shroeder_reverberator*)malloc(sizeof(shroeder_reverberator));
+	if (SR == NULL) 
+	{
+		return NULL;
+	}
+
+	for (int i=0; i<NUM_APCFS; i++)
+	{
+		SR->APCF[i] = init_ap_comb_filter(ap_delay_lengths[i], -ap_gain, ap_gain); 
+
+		if (SR->APCF[i] == NULL)
+		{
+			free(SR);
+			return NULL;
+		}
+
+	}
+	for (int i=0; i<NUM_FBCFS; i++)
+	{
+		SR->FBCF[i] = init_fb_comb_filter(fb_delay_lengths[i], 1.0, -fb_gains[i]);
+
+		if (SR->FBCF[i] == NULL)
+		{
+			free(SR);
+			return NULL;
+		}
+	}
+
+	return SR;
+	
+}
+
+void step_shroeder_reverberator(shroeder_reverberator *SR, float input, float *output)
+{
+	float sum = 0.0;
+
+	for (int i=0; i<NUM_APCFS; i++)
+	{
+		step_ap_comb_filter(SR->APCF[i], input, &input);
+	}
+
+	for (int i=0; i<NUM_FBCFS; i++)
+	{
+		// *output = 0.0;	// just in case, but shouldn't be needed
+		step_fb_comb_filter(SR->FBCF[i], input, output);
+
+		sum += *output;
+	}
+
+	*output = sum;
+
+	// TODO: No clue why I do this besides that I saw someone else do it...
+	return;
+}
+
+void delete_shroeder_reverberator(shroeder_reverberator *SR)
+{
+	for (int i=0; i<NUM_APCFS; i++)
+	{
+		delete_ap_comb_filter(SR->APCF[i]);
+	}
+
+	for (int i=0; i<NUM_FBCFS; i++)
+	{
+		delete_fb_comb_filter(SR->FBCF[i]);
+	}
+
+	free(SR);
+	SR = NULL;
+
+}
+
+/* Shroeder Reverberator End ***********************************************/
 
 void convolution_reverb(float* input, float* impulse, float* output, 
 						int input_length, int impulse_length) {

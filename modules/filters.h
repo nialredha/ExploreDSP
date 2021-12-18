@@ -3,6 +3,9 @@
 
 /* Module to digitally process wav signals using a variety of filters */
 
+#define NUM_APCFS 3
+#define NUM_FBCFS 4
+
 /* Delay Line ***************************************************************/
 
 typedef struct delay_line {
@@ -64,8 +67,8 @@ typedef struct fb_comb_filter {
 } fb_comb_filter;
 
 fb_comb_filter* init_fb_comb_filter(size_t delay_length, float b0, float am);
-/* initialize feed-forward comb filter, defining the delay length and the 
-   scalar consants b0 and bm. */
+/* initialize feed-back comb filter, defining the delay length and the scalar
+   consants b0 and am. */
 
 void step_fb_comb_filter(fb_comb_filter *FBCF, float input, float *output);
 /* sends the input data through the comb filter, using the delay line and 
@@ -84,8 +87,8 @@ typedef struct ap_comb_filter {
 } ap_comb_filter;
 
 ap_comb_filter* init_ap_comb_filter(size_t delay_length, float b0, float am);
-/* initialize feed-forward comb filter, defining the delay length and the 
-   scalar consants b0 and bm. */
+/* initialize all-pass comb filter, defining the delay length and the scalar
+   consants b0 and am. */
 
 void step_ap_comb_filter(ap_comb_filter *APCF, float input, float *output);
 /* sends the input data through the comb filter, using the delay line and 
@@ -95,6 +98,26 @@ void delete_ap_comb_filter(ap_comb_filter *APCF);
 /* free all memory, clear all buffers... you know that sort of stuff. */
 
 /* Allpass Comb Filter End *************************************************/
+
+/* Shroeder Reverberator ***************************************************/
+
+typedef struct shroeder_reverberator {
+	ap_comb_filter *APCF[NUM_APCFS];
+	fb_comb_filter *FBCF[NUM_FBCFS];
+} shroeder_reverberator;
+
+shroeder_reverberator* init_shroeder_reverberator(size_t *ap_delay_lengths, size_t *fb_delay_lengths, float ap_gain, float *fb_gains);
+/* initialize shroeder reverberator, defining the delay length and the scalar
+   consants for both the all-pass and feed-back comb filters. */
+
+void step_shroeder_reverberator(shroeder_reverberator *SR, float input, float *output);
+/* sends the input data through the correct sequence of filters, using the 
+   delay line and scalar constants, and outputs the filtered data. */
+
+void delete_shroeder_reverberator(shroeder_reverberator *SR);
+/* free all memory, clear all buffers... you know that sort of stuff. */
+
+/* Shroeder Reverberator End ***********************************************/
 
 void convolution_reverb(float* input, float* impulse, float* output, 
 						int input_length, int impulse_length);
