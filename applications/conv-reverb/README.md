@@ -11,7 +11,7 @@ like "Reverberation".
 Here are some recurrent acronyms I use for file naming and within the .c files
 themselves:
 
-DL ------- Delay Line
+DL -------- Delay Line
 
 FFCF ----- Feed-Forward Comb Filter
 
@@ -19,7 +19,7 @@ FBCF ----- Feed-Back Comb Filter
 
 APCF ----- All-Pass Comb Filter
 
-SR ------- Shroeder Reverberation  
+SR -------- Shroeder Reverberation  
 
 ## TODO
 1. Consolidate the different comb filter implementations... a lof of repeated
