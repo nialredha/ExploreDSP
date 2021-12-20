@@ -32,5 +32,7 @@ OACR ----- Overlap-Add Convolution Reverb
    distortion.
 3. Write 2-Channel open-add convolution reverb (right now it's just 1 channel) 
 4. Write Fast convolution reverb
+5. Delete/update the headers on each filters main file. Very redundant and 
+   generally useless information.
 
 
