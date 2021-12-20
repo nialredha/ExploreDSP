@@ -220,13 +220,19 @@ void read_wav_data(struct wav_info *w, uint16_t *data, FILE *fp) {
         data_size = x[0] | (x[1] << 8) | (x[2] << 16) | (x[3] << 24);
 
 		size_t num_of_samples = w->num_samples * w->num_channels;
-		uint16_t y[2];
+		uint16_t y[w->num_channels];
 
 		for (int i=0; i<w->num_samples; ++i) 
 		{
-			fread(y, bytes_per_sample, 2, fp);
+			fread(y, bytes_per_sample, w->num_channels, fp);
 			data[i] = y[0];
-			data[i+(w->num_samples)] = y[1];
+			if (w->num_channels > 1)
+			{
+				for (int j=1; j<w->num_channels; j++)
+				{
+					data[i+(w->num_samples*j)] = y[j];
+				}
+			}
 		}
 
          // Now we're done reading from *fp...
