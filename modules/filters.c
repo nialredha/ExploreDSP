@@ -3,12 +3,6 @@
 
 /* Delay Line ***************************************************************/
 
-/* 
-	Got to give credit where credit is due: thank you meoworkshop for your
-	blog on delay lines. If you haven't, check his blog out: 
-
-	https://www.meoworkshop.org/silly-audio-processing-6/
-*/
 
 delay_line* init_delay_line(size_t delay_length)
 {
@@ -373,8 +367,8 @@ void delete_shroeder_reverberator(shroeder_reverberator *SR)
 
 /* Shroeder Reverberator End ***********************************************/
 
-void convolution_reverb(float* input, float* impulse, float* output, 
-						int input_length, int impulse_length) {
+void overlap_add_convolution(float* input, float* impulse, float* output, 
+							 int input_length, int impulse_length) {
 
 	for (int i=0; i<input_length; i++) {
 		for (int j=0; j<impulse_length; j++) {

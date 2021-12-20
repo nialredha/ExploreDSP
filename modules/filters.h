@@ -1,7 +1,15 @@
 #include <stdint.h>
 #include <stdio.h>
 
-/* Module to digitally process wav signals using a variety of filters */
+/* 
+	Module to digitally process wav signals using a variety of filters
+
+	Got to give credit where credit is due: thank you meoworkshop for your
+	blog on delay lines, comb filters and the shroeder reverberator. If you 
+	haven't, check their blog out: 
+
+	https://www.meoworkshop.org/silly-audio-processing-6/
+*/
 
 #define NUM_APCFS 3
 #define NUM_FBCFS 4
@@ -119,6 +127,9 @@ void delete_shroeder_reverberator(shroeder_reverberator *SR);
 
 /* Shroeder Reverberator End ***********************************************/
 
-void convolution_reverb(float* input, float* impulse, float* output, 
-						int input_length, int impulse_length);
+/* Convolution Reverb ******************************************************/
 
+void overlap_add_convolution(float* input, float* impulse, float* output, 
+							 int input_length, int impulse_length);
+
+/* Convolution Reverb End **************************************************/
