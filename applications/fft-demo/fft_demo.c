@@ -50,10 +50,10 @@ int main() {
 	Data.frequency[0] = 1.0;	// 1Hz 
 	Data.num_frequencies = 1;
 
-	Data.sample_rate = 8;	
+	Data.sample_rate = 8; // 33554432; 16777216; 8388608; 4194304; 2097152;
 	Data.num_samples = Data.sample_rate*1;	// 1 second duration
 
-	Data.data = (float*)(malloc(Data.num_samples * sizeof Data.data)); 
+	Data.data = (float*)malloc(sizeof(float)*Data.num_samples);
 
 	wave_gen_f(&Data, Data.data);
 
@@ -65,11 +65,11 @@ int main() {
 	}
 	printf("__________________________________________\n\n");
 
-
 	// Now that we have simulated the data, we can go ahead and compute the
 	// discrete fourier transform using our fft module
 
-	float data_dft[Data.num_samples];
+	float *data_dft;
+	data_dft = (float *)malloc(sizeof(float)*Data.num_samples);
 
 	start = clock();
 	dft(Data.data, data_dft, Data.num_samples);
@@ -107,5 +107,6 @@ int main() {
 	printf("______________________________________________________\n\n");
 
 	free(Data.data);
+	free(data_dft);
 }
 	
