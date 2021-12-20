@@ -1,4 +1,4 @@
-/*	FFT Demo/Explanation using the radix-3 algorithm implemented by me in C.
+/*	FFT Demo/Explanation using the radix-2 algorithm implemented by me in C.
 	
 	The main goal here is to provide a decent explanation of what a fourier 
 	transform actually is and specifically how both the discrete and fast 
@@ -67,7 +67,7 @@ int main() {
 
 
 	// Now that we have simulated the data, we can go ahead and compute the
-	// discrete fourier transform using our fft.h module
+	// discrete fourier transform using our fft module
 
 	float data_dft[Data.num_samples];
 
@@ -87,45 +87,7 @@ int main() {
 	printf("\n");
 	printf("Run Time: %f seconds\n", cpu_time_used);
 	printf("______________________________________________________\n\n");
-
-	// As you can see, the transformed data has two peaks: one at index 1 of 
-	// the array and one at index 7 of the array. Now, you might be asking...
-	// How does this work? What do these peaks represent? Why are there two 
-	// peaks? Let's talk about it.  
-
-	// The main idea used to transform time-domain data into the frequency-
-	// domain is to walk the signal around a circle at different 
-	// frequencies. 
 	
-	// For example, when computing the transformed value for the first index,
-	// we walk the signal around a circle at a frequency of 0Hz, meaning we 
-	// don't walk the signal at all! Instead, we simply add up all of the wave
-	// amplitudes at each point. So, why does that give us 0? This is because
-	// the input signal is a pure sine wave, which oscillates at a frequency
-	// greater than 0Hz. Thus, the amplitudes of the sine wave sum to 0 when
-	// walking the signal around a circle at a frequency of 0.
-	
-	// Alright, now let's look at the next index. Here we walk the signal 
-	// around a signal at a frequency of 1Hz. Because we are walking at the 
-	// same frequency of the original sine wave, the points we sample and 
-	// place on a circle all lie on the positive x-axis. Meaning, if we were
-	// to sum the vectors (which 3B1B relates to finding the location of the 
-	// center of mass of the shape drawn my walking the signal around a 
-	// circle), we would get a very non-zero value. Reference the markdown
-	// document for a better explanation. 
-
-	// Nevertheless, this is what is conceptually happening. We wind or walk
-	// a complicated (or simple) signal at varying frequencies and determine
-	// frequencies where the sum of the vectors created when walking the 
-	// signal around a circle is significantly non-zero. These frequencies 
-	// are what were present in the original signal. Thus, we are able to 
-	// construct a lossless, tranformed signal that can tell you the 
-	// frequencies present in the orignal signal along with their phase and
-	// amplitude. 
-
-	// **DFT EXPLANATION NEEDS WORK
-
-
 	// Now onto the FFT, specifically the Radix-2 Algorithm. 
 
 	start = clock();
