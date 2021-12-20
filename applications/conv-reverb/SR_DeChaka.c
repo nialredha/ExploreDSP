@@ -83,7 +83,7 @@ void main() {
 	float *input_fdata; 
 	input_fdata = (float *)malloc(sizeof(float)* (input_info.num_samples*input_info.num_channels));
 
-	size_t	count = 0, count2 = 0;	// for printf debugging
+	// size_t	count = 0, count2 = 0;	// for printf debugging
 
 	// Channel 1 is the first half, Channel 2 is the second half
 	for(int i=0; i<input_info.num_samples*input_info.num_channels; i++)
