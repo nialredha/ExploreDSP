@@ -31,8 +31,20 @@ OACR ----- Overlap-Add Convolution Reverb
 2. Write universal normalization funciton for all filter outputs to prevent
    distortion.
 3. Write 2-Channel open-add convolution reverb (right now it's just 1 channel) 
-4. Write Fast convolution reverb
-5. Delete/update the headers on each filters main file. Very redundant and 
-   generally useless information.
+4. Write Fast convolution reverb for 2 Channel (right now it's just 1 channel)
+5. Fix "slow-down" issue due to writing a 48kHz track to 44.1 kHz
 
+## Notes
+Currently, the fast convolution reverb takes roughly 21 seconds through use of
+the FFT/IFFT, while the open-add convolution reverb takes 4090 seconds to 
+compute. That is almost 200 times faster! And I haven't even begun optimizing 
+what's written - there is a lot in the FFT algorithm that can be pre-computed
+and a lot that can be re-writtent to improve efficiency.
 
+Even though 21 seconds is a significant amount of time, it is crazy to think
+transforming two different audio files to the frequency domain, convolving
+them, and transforming back to the time domain can be that fast! 
+
+If you would like to compare the output files each  algorithm created, they are
+located in the data file and are named "OACR\_Full.wav" and 
+"OSCR\_1Ch\_IMPMasonicLodge.wav". 
