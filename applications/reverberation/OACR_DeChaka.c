@@ -1,21 +1,4 @@
 /* 
-	The goal is to successfully take audio in a .wav file I made and apply a 
-	reverberation effect using the FFT I built. This is all I want for 
-	Christmas - let the 12 days commense. 
-
-	Currently, I have made the audio and save it to a .wav file (see the 
-	const-audio-waves folder if you are interested). I also have built the 
-	FFT and the IFFT (see the fft-demo folder if you are interested). 
-
-	All that is left for me to do is figure out how to use the FFT for 
-	convolution reverbs...
-		
-		Realistically, I am going to need to add a bunch of functionality to
-		the filter module. Right now it looks like a delay line and comb 
-		is what's in store for me right now. Shouldn't take too long, as long
-		as I don't waste my time writing things that are ultimately going to 
-		be delted :)
-	
 	To build: gcc OACR_DeChaka.c ../../modules/filters.c ../../modules/wav.c -lm	
 	To run: ./a.out
 
