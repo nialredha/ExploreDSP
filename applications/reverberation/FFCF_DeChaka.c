@@ -1,33 +1,4 @@
 /* 
-	The goal is to successfully take audio in a .wav file I made and apply a 
-	reverberation effect using the FFT I built. This is all I want for 
-	Christmas - let the 12 days commense. 
-
-	Currently, I have made the audio and saved it to a .wav file (see the 
-	const-audio-waves folder if you are interested). I also have built the 
-	FFT and the IFFT (see the fft-demo folder if you are interested). 
-
-	*Update - I decided to use a beat that I made in Premiere of all things. 
-	Sine waves are boring and this beat is not. Simply put, the effects that 
-	I build will be cooler when applied to a more dynamic/interesting track.
-
-	All that is left for me to do is figure out how to use the FFT for 
-	convolution reverbs...
-		
-		Realistically, I am going to need to add a bunch of functionality to
-		the filter module. Right now it looks like a delay line and comb 
-		is what's in store for me. Shouldn't take too long, as long as I don't
-		waste my time writing things that are ultimately going to be deleted.
-
-	*Another Update - this is not entirely true. I realized there is distortion
-	when I simply read data from the .wav file and write the exact same data
-	back to a new .wav file. Currently trying to fix that...	
-
-	I am close, but am still experiencing small amounts of distortion.
-	
-	If after reading all of this, you still want to build and risk damaging
-	both your hearing and your headphones, be my guest:
-
 		Build Command: gcc FFCF_DeChaka.c ../../modules/filters.c ../../modules/wav.c -lm	
 		Run Command: ./a.out
 */

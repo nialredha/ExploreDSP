@@ -1,40 +1,6 @@
 /* 
-	The goal is to successfully take audio in a .wav file I made and apply a 
-	reverberation effect using the FFT I built. This is all I want for 
-	Christmas - let the 12 days commense. 
-
-	Currently, I have made the audio and saved it to a .wav file (see the 
-	const-audio-waves folder if you are interested). I also have built the 
-	FFT and the IFFT (see the fft-demo folder if you are interested). 
-
-	*Update - I decided to use a beat that I made in Adobe Premiere Pro of all 
-	things. The idea is, sonically, sine waves are boring and this beat is not.
-	Filters will sound more interesting when applied to a more complex track.
-
-	All that is left for me to do is figure out how to use the FFT for 
-	convolution reverbs...
-		
-		Realistically, I am going to need to add a bunch of functionality to
-		the filter module. Right now it looks like a delay line and  a variety 
-		of comb filters is what's in store for me. This shouldn't take too long
-		(especially with this awesome resource: meoworkshop.org), as long as 
-		I don't waste my time writing things that are ultimately going to be 
-		delted :)
-
-	*Another Update - this is not entirely true. I realized there is distortion
-	when I simply read data from the .wav file and write the exact same data
-	back to a new .wav file. Currently trying to fix that...	
-		
-		*Most Up To Date Update - I fixed this temporarily. I still don't have 
-		a robust way to normalize the data before converting back to int to 
-		ensure no overflow. Shouldn't be too hard, it just isn't my concern
-		right now. 
-
-	If after reading all of this, you still want to build and risk damaging
-	both your hearing and your headphones, be my guest:
-
-		Build Command: gcc APCF_DeChaka.c ../../modules/filters.c ../../modules/wav.c -lm	
-		Run Command: ./a.out
+	Build Command: gcc APCF_DeChaka.c ../../modules/filters.c ../../modules/wav.c -lm	
+	Run Command: ./a.out
 */
 
 #include <stdlib.h>
