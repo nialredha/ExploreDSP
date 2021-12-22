@@ -62,15 +62,17 @@ void cdft(Complex *input, Complex *output, int N)
 // TODO: write comments :(
 void fft(float* data, int N)
 {
+	NUMBER_OF_STAGES = 0;	// reset in case of multiple calls
+
 	int rev = 0, log_N = N;
 
 	int *order;
-	//int order[N];
+	// int order[N];
 
 	order = (int *)malloc(sizeof(int)*N);
 
 	float *sorted_data, *sorted_data_i;
-	//float sorted_data[N], sorted_data_i[N];
+	// float sorted_data[N], sorted_data_i[N];
 
 	sorted_data = (float *)malloc(sizeof(float)*N);
 	sorted_data_i = (float *)malloc(sizeof(float)*N);
@@ -87,8 +89,8 @@ void fft(float* data, int N)
 	for (int n=0; n<N; ++n)
 	{
 		order[n] = 0;
-		sorted_data[n] = 0;
-		sorted_data_i[n] = 0;
+		sorted_data[n] = 0.0;
+		sorted_data_i[n] = 0.0;
 	}
 
 	for (int n=0; n<N; ++n)
@@ -161,6 +163,7 @@ void fft(float* data, int N)
 
 	free(sorted_data);
 	free(sorted_data_i);
+	free(order);
 
 	/*
 	// Write transformed data to CSV
@@ -182,8 +185,21 @@ void fft(float* data, int N)
 
 void cfft(Complex *input, Complex *output, int N)
 {
-	int order[N], rev = 0, log_N = N;
-	float sorted_data[N], sorted_data_i[N];
+	NUMBER_OF_STAGES = 0;	// reset in case of multiple calls
+
+	int rev = 0, log_N = N;
+
+	int *order;
+	// int order[N];
+
+	order = (int *)malloc(sizeof(int)*N);
+
+	float *sorted_data, *sorted_data_i;
+	// float sorted_data[N], sorted_data_i[N];
+
+	sorted_data = (float *)malloc(sizeof(float)*N);
+	sorted_data_i = (float *)malloc(sizeof(float)*N);
+
 
 	while (log_N > 0)
 	{
@@ -266,6 +282,10 @@ void cfft(Complex *input, Complex *output, int N)
 		output->r[n] = sorted_data[n];
 		output->i[n] = sorted_data_i[n];
 	}
+
+	free(sorted_data);
+	free(sorted_data_i);
+	free(order);
 
 }
 
