@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include <stdio.h>
 
+#include "fft.h"
+
 /* 
 	Module to digitally process wav signals using a variety of filters
 
@@ -132,4 +134,14 @@ void delete_shroeder_reverberator(shroeder_reverberator *SR);
 void overlap_add_convolution(float* input, float* impulse, float* output, 
 							 int input_length, int impulse_length);
 
+void overlap_save_convolution(Complex *input, Complex *impulse, Complex *output,
+							  int input_length, int impulse_length, int rd_N);
+
 /* Convolution Reverb End **************************************************/
+
+/* General Tools ************************************************************/
+
+void complex_multiply(Complex *a, Complex *b, Complex *o, int length);
+
+/* General Tools End ********************************************************/
+

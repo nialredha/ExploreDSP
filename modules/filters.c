@@ -1,5 +1,7 @@
 #include <stdlib.h>
+
 #include "filters.h"
+#include "fft.h"
 
 /* Delay Line ***************************************************************/
 
@@ -376,5 +378,29 @@ void overlap_add_convolution(float* input, float* impulse, float* output,
 		}
 		//printf("%f\n", output[i]);
 	}
-
 }
+
+void overlap_save_convolution(Complex *input, Complex *impulse, Complex *output,
+							  int input_length, int impulse_length, int rd_N)
+{
+	cfft(input, input, rd_N);
+	cfft(impulse, impulse, rd_N);
+
+	complex_multiply(input, impulse, output, rd_N);
+	ifft(output, output, rd_N);
+
+	// fft(input, rd_N);
+	// fft(impulse, rd_N);
+
+	return;
+}
+
+void complex_multiply(Complex *a, Complex *b, Complex *o, int length)
+{
+	for (int i=0; i<length; i++)
+	{
+		o->r[i] = (a->r[i]*b->r[i]) - (a->i[i]*b->i[i]);
+		o->i[i] = (a->r[i]*b->i[i]) + (a->i[i]*b->r[i]);
+	}		
+}
+
