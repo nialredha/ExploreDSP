@@ -2,7 +2,7 @@
 #include "../../modules/filters.h"
 #include "../../modules/dataSim.h"
 
-//gcc delay_line_test.c ../../modules/filters.c ../../modules/dataSim.c -lm
+// gcc delay_line_test.c ../../modules/filters.c ../../modules/dataSim.c -lm
 
 int main() 
 {
