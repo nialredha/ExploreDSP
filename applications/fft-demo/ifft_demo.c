@@ -74,6 +74,7 @@ void main()
 		printf("%f, %f\n", output.r[i], output.i[i]);
 	}
 	
+	printf("_____________________________________________________\n\n");
 	printf("\n");
 	printf("Run Time: %f seconds\n", cpu_time_used);
 	printf("______________________________________________________\n\n");
