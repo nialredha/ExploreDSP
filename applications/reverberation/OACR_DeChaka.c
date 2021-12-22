@@ -10,6 +10,7 @@
 */
 
 #include <stdlib.h>
+#include <time.h>
 
 #include "../../modules/filters.h"
 #include "../../modules/wav.h"
@@ -106,9 +107,21 @@ void main() {
 		
 
 	// Overlap Add Convolution 
+	clock_t start, stop;
+	double cpu_time_used;
+
+	start = clock();
 	// This is way too expensive, which is why the FFT needs to be used. 
 	overlap_add_convolution(input_fdata, impulse_fdata, output_fdata, 
 					   input_length, impulse_length);
+	stop = clock();
+
+	cpu_time_used = ((double)(stop - start)) / CLOCKS_PER_SEC;
+
+	printf("\n");
+	printf("----------------------------------------------------\n");
+	printf("Overlap Add Convolution Run Time: %f seconds\n", cpu_time_used);
+	printf("----------------------------------------------------\n");
 
 	/* Finding maximum output value to "normalize" */
 
