@@ -1,8 +1,8 @@
 #ifndef FFT_H_	// include guard
 #define FFT_H_
 
-/* Module with basic DFT and FFT, supporting both real and complex inputs and
-   only floating point. 
+/* Module with basic DFT, FFT, and IFFT. Supports both real and complex inputs
+   and only floating point. 
 */ 
 
 // TODO: Should I only keep the dft/fft functions that accept complex inputs? 

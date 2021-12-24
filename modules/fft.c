@@ -30,8 +30,9 @@ void dft(float* data, float* amp, int N)
 		}
 
 		sum_sqs = real*real + imag*imag;
+
 		amp[freq] = sqrt(sum_sqs);
-		//phase[k] = atan(imag/real);
+		// phase[k] = atan(imag/real);
 
 		real = 0; imag = 0;
 	}
@@ -67,16 +68,17 @@ void fft(float* data, int N)
 	int rev = 0, log_N = N;
 
 	int *order;
-	// int order[N];
-
 	order = (int *)malloc(sizeof(int)*N);
 
 	float *sorted_data, *sorted_data_i;
-	// float sorted_data[N], sorted_data_i[N];
-
 	sorted_data = (float *)malloc(sizeof(float)*N);
 	sorted_data_i = (float *)malloc(sizeof(float)*N);
 
+	// Determine the amount of stages required - since the FFT splits the data
+	// into even and odd groups until each group only has 2 data points in it,
+	// the number of stages in the FFT is equivalent to the amount of times 
+	// you can divide the number of data points before you get 1. In other
+	// words, 2^NUMBER_OF_STAGES = N.
 	while (log_N > 0)
 	{
 		log_N >>= 1;
@@ -86,6 +88,7 @@ void fft(float* data, int N)
 		}
 	}
 
+	// Initialize all arrays to zero
 	for (int n=0; n<N; ++n)
 	{
 		order[n] = 0;
@@ -93,12 +96,17 @@ void fft(float* data, int N)
 		sorted_data_i[n] = 0.0;
 	}
 
+	// Determine the new order the data is going to take on after "splitting"
+	// data into even and odds. It turns out, the new index a given data point
+	// takes is the bit reversal of the index it was originally in. Thus, we
+	// call reverse_bits() to save the new order so we can reorganize the data. 
 	for (int n=0; n<N; ++n)
 	{
 		rev = reverse_bits(n);
 		order[n] = rev;
 	}
 
+	// Reorganize the real input data, using "order[n]" as the new index. 
 	for (int n=0; n<N; ++n)
 	{
 		sorted_data[n] = data[order[n]];
@@ -109,6 +117,7 @@ void fft(float* data, int N)
 	
 	float const_exp = 2.0*M_PI/N;
 
+	// Loop through each stage
 	for (int s=0; s<NUMBER_OF_STAGES; ++s)
 	{
 		// THE MAIN BUTTERFLY LOOP
@@ -151,6 +160,8 @@ void fft(float* data, int N)
 		n = 0;
 	}
 
+	// Compute magnitudes and overWrite input data with transformed, amplitude 
+	// data.
 	for (int n=0; n<N; ++n)
 	{
 		float temp = sorted_data[n]*sorted_data[n] + 
@@ -190,17 +201,18 @@ void cfft(Complex *input, Complex *output, int N)
 	int rev = 0, log_N = N;
 
 	int *order;
-	// int order[N];
-
 	order = (int *)malloc(sizeof(int)*N);
 
 	float *sorted_data, *sorted_data_i;
-	// float sorted_data[N], sorted_data_i[N];
-
 	sorted_data = (float *)malloc(sizeof(float)*N);
 	sorted_data_i = (float *)malloc(sizeof(float)*N);
 
 
+	// Determine the amount of stages required - since the FFT splits the data
+	// into even and odd groups until each group only has 2 data points in it,
+	// the number of stages in the FFT is equivalent to the amount of times 
+	// you can divide the number of data points before you get 1. In other
+	// words, 2^NUMBER_OF_STAGES = N.
 	while (log_N > 0)
 	{
 		log_N >>= 1;
@@ -210,6 +222,7 @@ void cfft(Complex *input, Complex *output, int N)
 		}
 	}
 
+	// Initialize all arrays to zero
 	for (int n=0; n<N; ++n)
 	{
 		order[n] = 0;
@@ -217,13 +230,20 @@ void cfft(Complex *input, Complex *output, int N)
 		sorted_data_i[n] = 0;
 	}
 
+	// Determine the new order the data is going to take on after "splitting"
+	// data into even and odds. It turns out, the new index a given data point
+	// takes is the bit reversal of the index it was originally in. Thus, we
+	// call reverse_bits() to save the new order so we can reorganize the data. 
 	for (int n=0; n<N; ++n)
 	{
 		rev = reverse_bits(n);
 		order[n] = rev;
 	}
 
-	//printf("Sorted Data\n");
+	// Reorganize the complex input data into its new order, using "order[n]"
+	// as the new index. 
+
+	// printf("Sorted Data\n");
 	for (int n=0; n<N; ++n)
 	{
 		sorted_data[n] = input->r[order[n]];
@@ -235,6 +255,7 @@ void cfft(Complex *input, Complex *output, int N)
 	
 	float const_exp = 2.0*M_PI / (float)N;
 
+	// Loop through each stage
 	for (int s=0; s<NUMBER_OF_STAGES; ++s)
 	{
 		// THE MAIN BUTTERFLY LOOP
@@ -277,6 +298,7 @@ void cfft(Complex *input, Complex *output, int N)
 		n = 0;
 	}
 
+	// Write transformed, complex data to output
 	for (int n=0; n<N; ++n)
 	{
 		output->r[n] = sorted_data[n];
@@ -292,15 +314,19 @@ void cfft(Complex *input, Complex *output, int N)
 void ifft(Complex* input, Complex* output, int N)
 {
 	float inverse_N = 1 / (float)N;
-	
+
+	// Compute the complex conjugate of the data
 	for (int i=0; i<N; ++i) 
 	{
-		input->i[i] *= -1.0;	// intended to be the complex conjugate of the data
+		input->i[i] *= -1.0;	
+		
 		//printf("%f\n", input->i[i]);
 	}
 
-	//cdft(input, output, N);
+	// cdft(input, output, N);
+
 	NUMBER_OF_STAGES = 0;
+	
 	cfft(input, output, N);
 
 	for (int i=0; i<N; ++i)
