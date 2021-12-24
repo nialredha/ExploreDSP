@@ -380,7 +380,7 @@ void overlap_add_convolution(float* input, float* impulse, float* output,
 	}
 }
 
-void overlap_save_convolution(Complex *input, Complex *impulse, Complex *output,
+void fft_convolution(Complex *input, Complex *impulse, Complex *output,
 							  int input_length, int impulse_length, int rd_N)
 {
 	cfft(input, input, rd_N);
@@ -388,9 +388,6 @@ void overlap_save_convolution(Complex *input, Complex *impulse, Complex *output,
 
 	complex_multiply(input, impulse, output, rd_N);
 	ifft(output, output, rd_N);
-
-	// fft(input, rd_N);
-	// fft(impulse, rd_N);
 
 	return;
 }
