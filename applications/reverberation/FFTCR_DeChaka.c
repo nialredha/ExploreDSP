@@ -3,7 +3,7 @@
 	http://www.jackcampbellsounds.com/2017/06/25/conv3.html
 	https://www.youtube.com/watch?v=fYggIQTaVx4	
 
-	To build: gcc OSCR_DeChaka.c ../../modules/filters.c ../../modules/wav.c ../../modules/fft.c -lm
+	To build: gcc FFTCR_DeChaka.c ../../modules/filters.c ../../modules/wav.c ../../modules/fft.c -lm
 	To run: ./a.out
 */
 
@@ -133,12 +133,12 @@ void main() {
 		output_fdata.i[i] = 0.0;
 	}
 
-	// Overlap Save Convolution 
+	// FFT Convolution 
 	clock_t start, stop;
 	double cpu_time_used;
 
 	start = clock();
-	overlap_save_convolution(&input_fdata, &impulse_fdata, &output_fdata, 
+	fft_convolution(&input_fdata, &impulse_fdata, &output_fdata, 
 					   input_length, impulse_length, rd_N);
 	stop = clock();
 
@@ -147,7 +147,7 @@ void main() {
 
 	printf("\n");
 	printf("----------------------------------------------------\n");
-	printf("Overlap Save Convolution Run Time: %f seconds\n", cpu_time_used);
+	printf("FFT Convolution Run Time: %f seconds\n", cpu_time_used);
 	printf("----------------------------------------------------\n");
 
 	/* Finding maximum output value to "normalize" */
@@ -169,7 +169,7 @@ void main() {
 		output_fdata.r[i] /= record + 1.0;	// "normalizing" the data
 	}
 
-	char* output_file = "data/OSCR_1Ch_IMPGoingHome.wav";	// filename to write to
+	char* output_file = "data/FFTCR_1Ch_IMPGoingHome.wav";	// filename to write to
 	printf("\n");
 	printf("---------------------------------------------\n");
 	printf("Preparing to write to %s:\n",output_file);
