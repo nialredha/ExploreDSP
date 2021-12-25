@@ -30,9 +30,7 @@ OACR ----- Overlap-Add Convolution Reverb
    repeated code. I am not too worried about it right now, but will be later. 
 2. Write universal normalization funciton for all filter outputs to prevent
    distortion.
-3. Write 2-Channel open-add convolution reverb (right now it's just 1 channel) 
-4. Write Fast convolution reverb for 2 Channel (right now it's just 1 channel)
-5. Fix "slow-down" issue due to writing a 48kHz track to 44.1 kHz
+3. Write 2-Channel open-add convolution reverb (might not do this)
 
 ## Notes
 Currently, the fast convolution reverb takes roughly 21 seconds through use of
@@ -47,4 +45,4 @@ them, and transforming back to the time domain can be that fast!
 
 If you would like to compare the output files each  algorithm created, they are
 located in the data file and are named "OACR\_Full.wav" and 
-"OSCR\_1Ch\_IMPMasonicLodge.wav". 
+"FFTCR\_1Ch\_IMPMasonicLodge.wav". 
