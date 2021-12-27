@@ -52,13 +52,14 @@ void wave_gen_f(data_obj* d, float* data) {
 }
 
 void normalize_wave(double* value, int num_frequencies) {
+/* Normalize waveforms composed of multiple sine waves to ensure wave
+   amplitudes aren't out of range when writing to .wav file. */
 	
 	double max = (double)num_frequencies;
 	double min = (double)(-1.0 *num_frequencies);
 	double range = max - min;
 
 	*value = (*value - min) / range;
-	//*value = *value / max;
 }
 
 

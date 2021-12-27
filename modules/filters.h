@@ -13,6 +13,7 @@
 	https://www.meoworkshop.org/silly-audio-processing-6/
 */
 
+// number of allpass and feedback comb filters in shroeder reverberator 
 #define NUM_APCFS 3
 #define NUM_FBCFS 4
 
@@ -37,7 +38,7 @@ void step_delay_line(delay_line *DL, float input, float *output);
    three iterations. */
 
 void current_delay_line(delay_line *DL, float *output);
-/**/
+/* returns the current value being pointed to in the delay line */
 
 void delete_delay_line(delay_line *DL);
 /* free all memory, clear all buffers... you know that sort of stuff. */
@@ -48,8 +49,8 @@ void delete_delay_line(delay_line *DL);
 
 typedef struct ff_comb_filter {
 
-	float b0;
-	float bm;
+	float b0;	// coefficient to scale input
+	float bm;	// coefficient to scale delay line output
 	delay_line *DL;
 
 } ff_comb_filter;
@@ -70,8 +71,8 @@ void delete_ff_comb_filter(ff_comb_filter *FFCF);
 /* Feedback Comb Filter ****************************************************/
 typedef struct fb_comb_filter {
 
-	float b0;
-	float am;
+	float b0;	// coefficient to scale new delay line output
+	float am;	// coefficient to scale current delay line value
 	delay_line *DL;
 
 } fb_comb_filter;

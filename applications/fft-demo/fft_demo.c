@@ -39,6 +39,9 @@ int main() {
 	clock_t start, stop;
 	double cpu_time_used;
 
+	int duration = 1; // seconds
+	float frequency_resolution;
+
 	// Let's start with the Discrete Fourier Transform
 
 	// First let's simulate a 1Hz sine wave with 8 points. To do this, we
@@ -51,19 +54,20 @@ int main() {
 	Data.num_frequencies = 1;
 
 	Data.sample_rate = 8; // 33554432; 16777216; 8388608; 4194304; 2097152;
-	Data.num_samples = Data.sample_rate*1;	// 1 second duration
+	Data.num_samples = Data.sample_rate*duration;	
 
+	frequency_resolution = (float)Data.sample_rate / (float)Data.num_samples;
 	Data.data = (float*)malloc(sizeof(float)*Data.num_samples);
 
 	wave_gen_f(&Data, Data.data);
 
 	printf("\n");
-	printf("1Hz Sine Wave: sampled at 8Hz for 1 second\n");
-	printf("__________________________________________\n\n");
+	printf("%GHz Sine Wave: sampled at %dHz for %d second(s)\n", Data.frequency[0], Data.sample_rate, duration);
+	printf("______________________________________________\n\n");
 	for(int i=0; i<Data.num_samples; i++) {
 		printf("%d: %f\n", i, Data.data[i]);
 	}
-	printf("__________________________________________\n\n");
+	printf("______________________________________________\n\n");
 
 	// Now that we have simulated the data, we can go ahead and compute the
 	// discrete fourier transform using our fft module
@@ -78,8 +82,8 @@ int main() {
 	cpu_time_used = ((double) (stop - start)) / CLOCKS_PER_SEC;
 
 	printf("\n");
-	printf("DFT --------------------------------------------------\n");
-	printf("Transformed 1Hz Sine Wave: sampled at 8Hz for 1 second\n");
+	printf("DFT of %d Point Sine Wave: \n", Data.num_samples);
+	printf("Frequency Resolution = %d/%d = %G\n", Data.sample_rate, Data.num_samples, frequency_resolution);
 	printf("______________________________________________________\n\n");
 	for(int i=0; i<Data.num_samples; i++) {
 		printf("%d: %f\n", i, data_dft[i]);
@@ -97,12 +101,13 @@ int main() {
 	cpu_time_used = ((double)(stop - start)) / CLOCKS_PER_SEC;
 
 	printf("\n");
-	printf("FFT --------------------------------------------------\n");
-	printf("Transformed 1Hz Sine Wave: sampled at 8Hz for 1 second\n");
+	printf("FFT of %d Point Sine Wave: \n", Data.num_samples);
+	printf("Frequency Resolution = %d/%d = %G\n", Data.sample_rate, Data.num_samples, frequency_resolution);
 	printf("______________________________________________________\n\n");
 	for(int i=0; i<Data.num_samples; i++) {
 		printf("%d: %f\n", i, Data.data[i]);
 	}
+	printf("\n");
 	printf("Run Time: %f seconds\n", cpu_time_used);
 	printf("______________________________________________________\n\n");
 
