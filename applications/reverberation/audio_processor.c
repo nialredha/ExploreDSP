@@ -9,6 +9,9 @@
 #include "../../modules/fft.h"
 #include "../../modules/filters.h"
 
+int STATE = 0;
+int SAME_NUM_CHANNELS = 1;
+
 void delay_line_main();
 /* */
 
@@ -54,7 +57,7 @@ int power_2_round(int num, int direction);
 
 void main() {
 
-	int var;
+	int state = STATE;
 	
 	printf("\n");
 	printf("Choose Effect:\n");
@@ -69,10 +72,12 @@ void main() {
 
 	printf("\n");
 	printf("Enter number corresponding to effect: ");
-	scanf("%X", &var);
+	scanf("%X", &state);
+
+	STATE = state;
 
 	printf("\n");
-	switch(var) {
+	switch(state) {
 		case 1:
 			printf("You Chose The Delay Line\n");
 			delay_line_main();
@@ -111,6 +116,8 @@ void delay_line_main() {
 	
 	float *fdata = retrieve_data(&input);
 
+	if(fdata == NULL) { return; }
+
 	// intialize delay line struct and determine the delay length specified by
 	// the user.
 	delay_line* DL;
@@ -128,6 +135,8 @@ void delay_line_main() {
 
 	float out;	// temporary variable to store delayj line output
 	float *fout = (float *)malloc(sizeof(float)*((input.num_samples+delay_length)*input.num_channels));
+
+	if(fout == NULL) { return; }
 
 	// step each channel's data through the delay line - e.g. if 2-channel, 
 	// the first half is channel 1 and the second half is channel 2. If the
@@ -185,6 +194,8 @@ void ff_comb_filter_main() {
 	struct wav_info input;
 	
 	float *fdata = retrieve_data(&input);
+
+	if(fdata == NULL) { return; }
 	
 	ff_comb_filter* FFCF;
 
@@ -207,6 +218,8 @@ void ff_comb_filter_main() {
 
 	float out = 0.0;	// temporary variable to transport the filter output
 	float *fout = (float *)malloc(sizeof(float)*((input.num_samples+delay_length)*input.num_channels));
+
+	if(fout == NULL) { return; }
 
 	// step each channel's data through the delay line - e.g. if 2-channel, 
 	// the first half is channel 1 and the second half is channel 2. If the
@@ -265,6 +278,8 @@ void fb_comb_filter_main() {
 	
 	float *fdata = retrieve_data(&input);
 
+	if(fdata == NULL) { return; }
+
 	fb_comb_filter* FBCF;
 
 	printf("\n");
@@ -286,6 +301,8 @@ void fb_comb_filter_main() {
 
 	float out = 0.0;	// temporary variable to transport the filter output
 	float *fout = (float *)malloc(sizeof(float)*((input.num_samples+delay_length)*input.num_channels));
+
+	if(fout == NULL) { return; }
 
 	// step each channel's data through the delay line - e.g. if 2-channel, 
 	// the first half is channel 1 and the second half is channel 2. If the
@@ -344,6 +361,8 @@ void ap_comb_filter_main() {
 	
 	float *fdata = retrieve_data(&input);
 
+	if(fdata == NULL) { return; }
+
 	ap_comb_filter* APCF;
 
 	printf("\n");
@@ -365,6 +384,8 @@ void ap_comb_filter_main() {
 
 	float out = 0.0;	// temporary variable to transport the filter output
 	float *fout = (float *)malloc(sizeof(float)*((input.num_samples+delay_length)*input.num_channels));
+
+	if(fout == NULL) { return; }
 
 	// step each channel's data through the delay line - e.g. if 2-channel, 
 	// the first half is channel 1 and the second half is channel 2. If the
@@ -422,6 +443,8 @@ void shroeder_reverberator_main() {
 	struct wav_info input;
 	
 	float *fdata = retrieve_data(&input);
+	
+	if(fdata == NULL) { return; }
 
 	shroeder_reverberator* SR;
 
@@ -474,6 +497,8 @@ void shroeder_reverberator_main() {
 
 	float out = 0.0;	// temporary variable to transport the filter output
 	float *fout = (float *)malloc(sizeof(float)*((input.num_samples)*input.num_channels));
+
+	if(fout == NULL) { return; }
 
 	// step each channel's data through the delay line - e.g. if 2-channel, 
 	// the first half is channel 1 and the second half is channel 2. If the
@@ -530,11 +555,28 @@ void convolution_reverb_main() {
 	printf("---------------");
 	float *fimpulse = retrieve_data(&impulse);
 
+	if (finput == NULL || fimpulse == NULL) { return; }
+
 	if(input.num_channels != impulse.num_channels)
 	{
 		printf("\n");
-		printf("ERROR: input and impulse .wav files have different number of channels.\n");
-		return;
+		printf("WARNING: input and impulse .wav files have different number of channels.\n");
+
+		// return;
+
+		/*
+		SAME_NUM_CHANNELS = 0;
+		if(input.num_channels == 1)
+		{
+			for(int i=0; i<input.num_samples; i++) 
+			{
+				finput[i+input.num_samples] = finput[i];
+			}
+			input.num_channels = 2;
+
+			printf("Converted input to stereo to self solve this error\n");
+		}
+		*/
 	}
 
 	size_t output_length = input.num_samples + (impulse.num_samples - 1);
@@ -554,11 +596,18 @@ void convolution_reverb_main() {
 	cfoutput.r = (float *)malloc(sizeof(float) * rd_N/input.num_channels);
 	cfoutput.i = (float *)malloc(sizeof(float) * rd_N/input.num_channels);
 
+	if(cfinput.r   == NULL || cfinput.i   == NULL ||
+	   cfimpulse.r == NULL || cfimpulse.i == NULL ||
+	   cfoutput.r  == NULL || cfoutput.i  == NULL) 
+	{return;}
+
 	float *fout = (float *)malloc(sizeof(float)*(output_length*input.num_channels));
+
+	if(fout == NULL) { return; }
 
 	for(int c=0; c<input.num_channels; c++)
 	{
-		for(int i=0; i<rd_N/2; i++)
+		for(int i=0; i<rd_N/input.num_channels; i++)
 		{
 			if(i<input.num_samples) 
 			{
@@ -611,7 +660,7 @@ void convolution_reverb_main() {
 	// set output .wav parameters
     output.num_channels = input.num_channels;		
     output.bits_per_sample = input.bits_per_sample;
-    output.sample_rate = input.sample_rate; 
+    output.sample_rate = 30000;	// input.sample_rate; 
     output.num_samples = output_length;
 
 	printf("\n");
@@ -630,6 +679,8 @@ float* retrieve_data(struct wav_info *w) {
 	printf("Enter relative file path to .wav file: ");
 	idata = open_file_read_data(w);
 
+	if(idata == NULL) { return NULL; }
+
 	// print input file wav header info
 	printf("\n");
 	printf("WAV File Header Info:\n");
@@ -644,6 +695,8 @@ float* retrieve_data(struct wav_info *w) {
 	float *fdata;
 	fdata = convert_data_to_float(w, idata);
 	free(idata);
+
+	if(fdata == NULL) { return NULL; }
 
 	return fdata;
 }
@@ -691,6 +744,8 @@ int16_t* open_file_read_data(struct wav_info *w) {
 	// allocate data based on the number of samples and number of channels and
 	// store the int data in the idata buffer. 
 	int16_t *idata = (int16_t *)malloc(sizeof(int16_t)*(w->num_samples*w->num_channels));
+	if(idata == NULL) { return NULL; }
+
 	read_wav_data(w, idata, fp); 
 
 	// now that the header and the data has been read and stored locally there
@@ -708,6 +763,20 @@ float* convert_data_to_float(struct wav_info *w, int16_t* idata) {
 	
 	// allocate memory for float data buffer
 	float *fdata = (float *)malloc(sizeof(float)*(w->num_samples*w->num_channels));
+
+	if(fdata == NULL) { return NULL; }
+
+	/*
+	float *fdata;
+	if(STATE == 6 && SAME_NUM_CHANNELS == 0 && w->num_channels == 1)
+	{
+		fdata = (float *)malloc(sizeof(float)*(w->num_samples*2));
+	}
+	else
+	{
+		fdata = (float *)malloc(sizeof(float)*(w->num_samples*w->num_channels));
+	}
+	*/
 
 	// divide each data point by max_int to convert the data into floats
 	// ranging from -1 to 1.
