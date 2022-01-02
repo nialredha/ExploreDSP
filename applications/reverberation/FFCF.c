@@ -164,7 +164,7 @@ void main() {
 	// free all memory 
 	delete_ff_comb_filter(FFCF2);
 
-	char* output_file = "data/FFCF_M10000_b01_bm09.wav";
+	char* output_file = "data/output_signals/FFCF_M10000_b01_bm09.wav";
 	printf("Preparing to write to %s:\n",output_file);
     print_wav_info(&output_info);
 	printf("\n");

@@ -167,7 +167,7 @@ void main() {
 		output_fdata.r[i] /= record + 1.0;	// "normalizing" the data
 	}
 
-	char* output_file = "data/FFTCR_1Ch_IMPGoingHome.wav";	// filename to write to
+	char* output_file = "data/output_signals/FFTCR_1Ch_IMPGoingHome.wav";	// filename to write to
 	printf("\n");
 	printf("---------------------------------------------\n");
 	printf("Preparing to write to %s:\n",output_file);

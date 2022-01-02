@@ -164,7 +164,7 @@ void main() {
 	// free all memory 
 	delete_shroeder_reverberator(SR2);
 
-	char* output_file = "data/shroeder_reverberator.wav";
+	char* output_file = "data/output_signals/shroeder_reverberator.wav";
 	printf("Preparing to write to %s:\n",output_file);
     print_wav_info(&output_info);
 	printf("\n");

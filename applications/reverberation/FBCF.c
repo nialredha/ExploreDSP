@@ -164,7 +164,7 @@ void main() {
 	// free all memory 
 	delete_fb_comb_filter(FBCF2);
 
-	char* output_file = "data/FBCF_M4000_b005_bm-08.wav";
+	char* output_file = "data/output_signals/FBCF_M4000_b005_bm-08.wav";
 	printf("Preparing to write to %s:\n",output_file);
     print_wav_info(&output_info);
 	printf("\n");

@@ -278,7 +278,7 @@ void main() {
 	}
 
 	// set output file path and print the .wav file header info
-	char* output_file = "data/FFTCR_2Ch_48kHz_IMPHighlyDampedLargeRoom.wav";	// filename to write to
+	char* output_file = "data/output_signals/FFTCR_2Ch_48kHz_IMPHighlyDampedLargeRoom.wav";	// filename to write to
 	printf("\n");
 	printf("---------------------------------------------\n");
 	printf("Preparing to write to %s:\n",output_file);

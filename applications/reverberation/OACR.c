@@ -142,7 +142,7 @@ void main() {
 		output_fdata[i] /= record + 1.0;	// "normalizing" the data
 	}
 
-	char* output_file = "data/OACR_Full.wav";	// filename to write to
+	char* output_file = "data/output_signals/OACR_Full.wav";	// filename to write to
 	printf("Preparing to write to %s:\n",output_file);
     print_wav_info(&output_info);
 	printf("\n");
