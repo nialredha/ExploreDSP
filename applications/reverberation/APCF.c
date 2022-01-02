@@ -1,5 +1,5 @@
 /* 
-	Build Command: gcc APCF_DeChaka.c ../../modules/filters.c ../../modules/wav.c -lm	
+	Build Command: gcc APCF.c ../../modules/filters.c ../../modules/wav.c -lm	
 	Run Command: ./a.out
 */
 
