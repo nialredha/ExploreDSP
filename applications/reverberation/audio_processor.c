@@ -12,25 +12,36 @@
 int STATE = 0;
 int SAME_NUM_CHANNELS = 1;
 
+/* FUNCTIONS DEFINES *******************************************************/
+
 void delay_line_main();
-/* */
+/* sends input data through a delay line of user-defined length and writes 
+   the delayed data to a user-defined .wav */
 
 void ff_comb_filter_main();
-/* */
+/* sends input data through a feed-forward comb filter with user-defined
+   coefficients and writes the filtered data to a user-defined .wav */
 
 void fb_comb_filter_main();
-/* */
+/* sends input data through a feed-back comb filter with user-defined 
+   coefficients and writes the filtered data to a user-defined .wav */
 
 void ap_comb_filter_main();
-/* */
+/* sends input data through an all-pass comb filter with user-defined
+   coefficients and writes the filtered data to a user-defined .wav */
 
 void shroeder_reverberator_main();
-/* */
+/* sends input data through a shroeder reverberator with user-define 
+   coefficients and writes the filtered data to a user-defined .wav */
 
 void convolution_reverb_main();
-/* */
+/* convolves input data with a user-defined impulse response and writes the
+   convolved data to a user-define .wav */
 
 float* retrieve_data(struct wav_info *w);
+/* prompts user to input file path, reads input data using 
+   "open_file_read_data", updates and prints wav_info, converts data to
+   floating point using "convert_data_to_float", and returns float data. */
 
 int16_t* open_file_read_data(struct wav_info *w);
 /* open .wav file, read int data into buffer and return stored data. */
@@ -43,7 +54,8 @@ void normalize_data(float *fdata, int N);
 /* finding maximum output value to "normalize" */
 
 void create_file_write_data(struct wav_info *w, float* fdata);
-/**/
+/* reads output file path, prints wav_info, writes header, converts floating
+   point data back to int, and writes data to .wav. */
 
 void find_max_int(struct wav_info* w, int* max_int);
 /* Find the max integer a wav file can express - essentially figure out a wav
@@ -54,6 +66,8 @@ void find_max_int(struct wav_info* w, int* max_int);
 
 int power_2_round(int num, int direction);
 /* round integer up or down to the nearest power of 2 */
+
+/* END OF FUNCTION DEFINES *************************************************/
 
 void main() {
 
@@ -108,7 +122,6 @@ void main() {
 }
 
 void delay_line_main() {
-/* */
 	
 	// initialize struct containing input data header info and pointer to 
 	// input data
@@ -187,7 +200,6 @@ void delay_line_main() {
 }
 
 void ff_comb_filter_main() {
-/* */
 
 	// initialize struct containing input data header info and pointer to 
 	// input data
@@ -270,7 +282,6 @@ void ff_comb_filter_main() {
 }
 
 void fb_comb_filter_main() {
-/* */
 
 	// initialize struct containing input data header info and pointer to 
 	// input data
@@ -353,7 +364,6 @@ void fb_comb_filter_main() {
 }
 
 void ap_comb_filter_main() {
-/* */
 
 	// initialize struct containing input data header info and pointer to 
 	// input data
@@ -436,7 +446,6 @@ void ap_comb_filter_main() {
 }
 
 void shroeder_reverberator_main() {
-/* */
 
 	// initialize struct containing input data header info and pointer to 
 	// input data
@@ -541,6 +550,7 @@ void shroeder_reverberator_main() {
 }
 
 void convolution_reverb_main() {
+
 	// initialize struct containing input data header info and pointer to 
 	// input data
 	struct wav_info input;
@@ -671,6 +681,7 @@ void convolution_reverb_main() {
 }
 
 float* retrieve_data(struct wav_info *w) {
+
 	int16_t *idata;
 
 	// prompt user to enter input file path. If the file is valid, open it and
@@ -702,6 +713,7 @@ float* retrieve_data(struct wav_info *w) {
 }
 
 int16_t* open_file_read_data(struct wav_info *w) {
+
 	// user input relative file path to .wav file
     char file_path[1000];
 	scanf("%s", file_path); 
@@ -756,8 +768,9 @@ int16_t* open_file_read_data(struct wav_info *w) {
 }
 
 float* convert_data_to_float(struct wav_info *w, int16_t* idata) {
-	// find the largest expressable integer based on the .wav formatting, 
-	// specifically the amount of bits per sample
+/* find the largest expressable integer based on the .wav formatting, 
+   specifically the amount of bits per sample */
+
 	uint32_t max_int;
 	find_max_int(w, &max_int);
 	
@@ -915,16 +928,18 @@ int power_2_round(int num, int direction) {
 	if (direction == 1)
 	{
 		rd_num = 1 << shift + 1;
+		printf("\n");
 		printf("-----------------------------------\n");
-		printf("%d rounded up = %d\n", original_num, rd_num);
+		printf("%d rounded up to nearest power of 2 = %d\n", original_num, rd_num);
 		printf("-----------------------------------\n");
 	}
 	// Round down
 	else if (direction == -1)
 	{
 		rd_num = 1 << shift;
+		printf("\n");
 		printf("-----------------------------------\n");
-		printf("%d rounded down = %d\n", original_num, rd_num);
+		printf("%d rounded down to nearest power of 2 = %d\n", original_num, rd_num);
 		printf("-----------------------------------\n");
 	}
 
