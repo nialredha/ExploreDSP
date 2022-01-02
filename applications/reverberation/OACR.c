@@ -1,5 +1,5 @@
 /* 
-	To build: gcc OACR_DeChaka.c ../../modules/filters.c ../../modules/wav.c -lm	
+	To build: gcc OACR.c ../../modules/filters.c ../../modules/wav.c ../../modules/fft.c -lm 
 	To run: ./a.out
 
 	WARNING: This script runs an overlap-add convolution on an over 3 million
