@@ -1,5 +1,5 @@
 /* 
-	Build Command: gcc FBCF_DeChaka.c ../../modules/filters.c ../../modules/wav.c -lm	
+	Build Command: gcc FBCF.c ../../modules/filters.c ../../modules/wav.c -lm	
 	Run Command: ./a.out
 */
 
