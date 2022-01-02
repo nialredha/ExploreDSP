@@ -3,7 +3,7 @@
 	http://www.jackcampbellsounds.com/2017/06/25/conv3.html
 	https://www.youtube.com/watch?v=fYggIQTaVx4	
 
-	To build: gcc FFTCR_DeChaka.c ../../modules/filters.c ../../modules/wav.c ../../modules/fft.c -lm
+	To build: gcc FFTCR.c ../../modules/filters.c ../../modules/wav.c ../../modules/fft.c -lm
 	To run: ./a.out
 */
 
