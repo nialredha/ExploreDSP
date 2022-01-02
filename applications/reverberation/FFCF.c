@@ -1,5 +1,5 @@
 /* 
-		Build Command: gcc FFCF.c ../../modules/filters.c ../../modules/wav.c -lm	
+		Build Command: gcc FFCF.c ../../modules/filters.c ../../modules/wav.c ../../modules/fft.c -lm	
 		Run Command: ./a.out
 */
 
