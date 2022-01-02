@@ -7,7 +7,8 @@
 	To run: ./a.out
 */
 
-#include <stdlib.h> #include <math.h>
+#include <stdlib.h> 
+#include <math.h>
 #include <time.h>
 
 #include "../../modules/filters.h"
