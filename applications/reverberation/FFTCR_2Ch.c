@@ -13,8 +13,6 @@
 
 #include "../../modules/filters.h"
 #include "../../modules/wav.h"
-#include "../../modules/fft.h"
-
 
 void find_max_int(struct wav_info* w, int* max_int);
 /* Find the max integer a wav file can express - essentially figure out a wav
@@ -42,7 +40,7 @@ void main() {
 
 	// set input and impulse file paths	
     char* input_file = "data/input_signals/DeChaka_Instrumental.wav";
-	char* impulse_file = "data/impulse_responses/Highly Damped Large Room.wav";
+	char* impulse_file = "data/impulse_responses/Highly_Damped_Large_Room.wav";
 
 	// open both the input and impulse file
     FILE* input = fopen(input_file,"rb");

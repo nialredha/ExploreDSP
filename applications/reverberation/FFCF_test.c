@@ -2,7 +2,7 @@
 #include "../../modules/filters.h"
 #include "../../modules/dataSim.h"
 
-// gcc ff_comb_filter_test.c ../../modules/filters.c ../../modules/dataSim.c -lm
+// gcc FFCF_test.c ../../modules/filters.c ../../modules/dataSim.c ../../modules/fft.c -lm
 
 int main() 
 {

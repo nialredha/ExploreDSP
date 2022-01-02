@@ -6,7 +6,6 @@
 #include <stdlib.h>
 
 #include "../../modules/wav.h"
-#include "../../modules/fft.h"
 #include "../../modules/filters.h"
 
 void find_max_int(struct wav_info* w, int* max_int);
