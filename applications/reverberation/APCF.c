@@ -165,7 +165,7 @@ void main() {
 	// free all memory 
 	delete_ap_comb_filter(APCF2);
 
-	char* output_file = "data/New_APCF_M4000_b005_am-05.wav";
+	char* output_file = "data/APCF_M4000_b005_am-05.wav";
 	printf("Preparing to write to %s:\n",output_file);
     print_wav_info(&output_info);
 	printf("\n");
