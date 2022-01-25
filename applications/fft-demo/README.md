@@ -19,7 +19,7 @@ watch his video.
 
 ## Introduction
 Assuming you have watched the video, here is what I am going to be talking
-about. 
+about:
 
 Overall, I am going to walk through what the fourier transform is and how it
 can be descritized to run on a computer. However, I am not going to speak on
@@ -45,6 +45,7 @@ If you somehow stumble upon this, please let me know what you think!
 
 
 ## Discrete Fourier Transform 
+<!---
 As you can see, the transformed data has two peaks: one at index 1 of the
 array and one at index 7 of the array. Now, you might be asking... how does
 this work? What do these peaks represent? Why are there two peaks? Let's talk
@@ -77,6 +78,7 @@ tranformed signal that can tell you the frequencies present in the original
 signal along with their phase and amplitude.
 
 **DFT EXPLANATION NEEDS WORK. 
+-->
 
 
 ## Fast Fourier Transform 
