@@ -4,6 +4,7 @@
 */
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 #include "../../modules/wav.h"
 #include "../../modules/fft.h"
@@ -189,7 +190,7 @@ void delay_line_main() {
 	// set output .wav parameters
     output.num_channels = input.num_channels;		
     output.bits_per_sample = input.bits_per_sample;
-    output.sample_rate = input.sample_rate; 
+    output.sample_rate = 30000; //input.sample_rate; 
     output.num_samples = input.num_samples + delay_length;
 
 	printf("\n");
@@ -551,6 +552,10 @@ void shroeder_reverberator_main() {
 
 void convolution_reverb_main() {
 
+	// variables used to measure computation time
+	clock_t start, stop;
+	double cpu_time_used;
+
 	// initialize struct containing input data header info and pointer to 
 	// input data
 	struct wav_info input;
@@ -571,6 +576,13 @@ void convolution_reverb_main() {
 	{
 		printf("\n");
 		printf("WARNING: input and impulse .wav files have different number of channels.\n");
+
+		if(input.num_channels > impulse.num_channels)
+		{
+			printf("\n");
+			printf("ERROR: impulse cannot be mono if input is stereo!\n");
+			return;
+		}
 
 		// return;
 
@@ -644,10 +656,17 @@ void convolution_reverb_main() {
 
 		printf("\n");
 		printf("Convolving Channel %d...\n", c+1);
+		start = clock();
 		fft_convolution(&cfinput, &cfimpulse, &cfoutput, 
 						input.num_samples, impulse.num_samples, 
 						rd_N/input.num_channels);
+		stop = clock();
 		printf("Channel %d Convoluted Successfully!\n", c+1);
+		// compute the amount of computation time to run the fast convolution and
+		// print the run time.
+		cpu_time_used = ((double)(stop - start)) / CLOCKS_PER_SEC;
+		printf("FFT Convolution Run Time: %f seconds\n", cpu_time_used);
+		printf("----------------------------------------------------\n");
 
 		for(int i=0; i<output_length; i++)
 		{
@@ -670,7 +689,7 @@ void convolution_reverb_main() {
 	// set output .wav parameters
     output.num_channels = input.num_channels;		
     output.bits_per_sample = input.bits_per_sample;
-    output.sample_rate = 30000;	// input.sample_rate; 
+    output.sample_rate = input.sample_rate; 
     output.num_samples = output_length;
 
 	printf("\n");
