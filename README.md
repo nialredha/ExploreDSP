@@ -1,6 +1,20 @@
 # ExploreDSP
 Exploring Digital Signal Processing 
 
+## Systems Requirements
+GCC / Linux 
+
+## File Structure
+The modules folder contains:
+1. fft.h/fft.c - Radix-2 FFT algorithm
+2. filters.h/filters.c - Different comb filters and a couple reverberation algorithms
+3. wav.h/wav.c - Reads and writes from/to WAV format
+4. dataSim.h/dataSim.c - Simulates waveforms
+
+The applications folder contains:
+1. const-audio-waves - creating basics chord WAV files from simulated waveforms
+2. fft-demo - demonstration of the FFT algorithm with intentions of being educational
+3. reverberation - user friendly terminal app that can add a variety of effects to a user-inputed WAV file
 
 ## Summary
 Most of my efforts in this repo went into writing the fft/ifft located in
