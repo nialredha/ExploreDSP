@@ -11,14 +11,6 @@
 // I don't see the advantage of having them accept real inputs. Need to think
 // about this. 
 
-/*
-typedef struct Complex
-{
-	float* r;	// real component
-	float* i;	// imaginary component
-} Complex;
-*/
-
 // Function Declarations 
 
 int	reverse_bits(int num);
