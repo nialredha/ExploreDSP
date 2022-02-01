@@ -14,7 +14,8 @@ The modules folder contains:
 The applications folder contains:
 1. const-audio-waves - creating basic WAV audio files from simulated waveforms
 2. fft-demo - demonstration of the FFT algorithm with intentions of being educational
-3. reverberation - user friendly terminal app that can add a variety of effects to a user-inputed WAV file and, in the case of adding reverb, an impulse WAV file
+3. reverberation - user friendly terminal app that can add a variety of effects 
+to a user-inputed WAV file and, in the case of adding reverb, an impulse WAV file
 
 ## Summary
 The two main things I took a look at are: 
@@ -39,4 +40,7 @@ my own is simply because I liked this one much better than what I had written.
 While the website I downloaded it from no longer exists, modules/wav.h has 
 more information on who wrote it. 
 
-
+## Left To Do
+1. Optimization for FFT multiple calls of the same data size
+2. Create complex number library and remove complex struct from fft.h and
+comlex multiply from filters module
