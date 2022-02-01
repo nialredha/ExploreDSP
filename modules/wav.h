@@ -1,3 +1,6 @@
+#ifndef WAV_H_	// include guard
+#define WAV_H_
+
 /* Provides basic handling of PCM format RIFF/WAVE audio files see:
    http://www-mmsp.ece.mcgill.ca/Documents/AudioFormats/WAVE/Docs/riffmci.pdf
    for some information on the relevant specification.
@@ -29,7 +32,7 @@ void read_wav_info(struct wav_info* w, FILE* fp);
    of *fp, so one could immediately begin reading/writing samples */
 
 void read_wav_data(struct wav_info* w, uint16_t *data, FILE* fp);
-/*jRead wav_info from *fp, assuming *fp is a PCM format RIFF/WAVE file.
+/* Read wav_info from *fp, assuming *fp is a PCM format RIFF/WAVE file.
    Leaves the seek position of *fp at the beginning of the data section
    of *fp, so one could immediately begin reading/writing samples */
 
@@ -55,4 +58,30 @@ void write_sample(const struct wav_info* w, FILE* fp, const int_fast16_t* sample
    to use bits_per_sample=8, then you should use uint_fast8_t to hold
    your samples. */
 
+float* retrieve_data(struct wav_info *w);
+/* prompts user to input file path, reads input data using 
+   "open_file_read_data", updates and prints wav_info, converts data to
+   floating point using "convert_data_to_float", and returns float data. */
+
+int16_t* open_file_read_data(struct wav_info *w);
+/* open .wav file, read int data into buffer and return stored data. */
+
+float* convert_data_to_float(struct wav_info *w, int16_t* idata);
+/* convert the int data into float using the max bits per sample stored in 
+   .wav file header. */
+
+void normalize_data(float *fdata, int N);
+/* finding maximum output value to "normalize" */
+
+void create_file_write_data(struct wav_info *w, float* fdata);
+/* reads output file path, prints wav_info, writes header, converts floating
+   point data back to int, and writes data to .wav. */
+
+void find_max_int(struct wav_info* w, int* max_int);
+/* Find the max integer a wav file can express - essentially figure out a wav
+   file's bit-depth to determine the largest integer expressable. 
    
+   For example, if the bit depth was 16 bits, the maximum integer expressable
+   would be 32767 */
+
+#endif // WAV_H_
