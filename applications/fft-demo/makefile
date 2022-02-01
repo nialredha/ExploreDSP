@@ -13,11 +13,11 @@ DATASIM_MODULE = ../../modules/dataSim.c
 all: fft ifft
 
 fft: ${FFT_MODULE} ${DATASIM_MODULE} fft_demo.c 
-	[ -d $(BUILD_DIR) ] || mkdir -p $(BUILD_DIR)
+	[ -d ${BUILD_DIR} ] || mkdir -p ${BUILD_DIR}
 	gcc ${LINKER_FLAG} -o build/fft fft_demo.c ${FFT_MODULE} ${DATASIM_MODULE}
 
 ifft: ${FFT_MODULE} ${DATASIM_MODULE} ifft_demo.c 
-	[ -d $(BUILD_DIR) ] || mkdir -p $(BUILD_DIR)
+	[ -d ${BUILD_DIR} ] || mkdir -p ${BUILD_DIR}
 	gcc ${LINKER_FLAG} -o build/ifft ifft_demo.c ${FFT_MODULE} ${DATASIM_MODULE}
 
 run_fft: 
