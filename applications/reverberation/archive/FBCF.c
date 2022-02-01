@@ -1,14 +1,14 @@
 /* 
-	Build Command: gcc FBCF.c ../../modules/filters.c ../../modules/wav.c ../../modules/fft.c -lm	
+	Build Command: gcc FBCF.c ../../../modules/filters.c ../../../modules/wav.c ../../../modules/fft.c ../../../modules/complex.c -lm	
 	Run Command: ./a.out
 */
 
 #include <stdlib.h>
 
-#include "../../modules/wav.h"
-#include "../../modules/filters.h"
+#include "../../../modules/wav.h"
+#include "../../../modules/filters.h"
 
-void find_max_int(struct wav_info* w, int* max_int);
+void local_find_max_int(struct wav_info* w, int* max_int);
 /* Find the max integer a wav file can express - essentially figure out a wav
    file's bit-depth to determine the largest integer expressable. 
    
@@ -21,7 +21,7 @@ void normalize_comb(float* value, float b0, float bm);
 
 void main() {
 
-	char *input_file = "data/input_signals/DeChaka_Instrumental.wav";	
+	char *input_file = "../data/input_signals/DeChaka_Instrumental.wav";	
 	struct wav_info input_info;
     FILE* input = fopen(input_file,"rb");
 
@@ -37,7 +37,7 @@ void main() {
 
 	uint32_t max_input_int;	// used to convert wav data to floating point
 
-	find_max_int(&input_info, &max_input_int);
+	local_find_max_int(&input_info, &max_input_int);
 
 	// load in input data in integer format
 	read_wav_data(&input_info, input_idata, input);
@@ -164,7 +164,7 @@ void main() {
 	// free all memory 
 	delete_fb_comb_filter(FBCF2);
 
-	char* output_file = "data/output_signals/FBCF_M4000_b005_bm-08.wav";
+	char* output_file = "FBCF_M4000_b005_bm-08.wav";
 	printf("Preparing to write to %s:\n",output_file);
     print_wav_info(&output_info);
 	printf("\n");
@@ -175,7 +175,7 @@ void main() {
     }
 
 	int max_output_int;
-	find_max_int(&output_info, &max_output_int);
+	local_find_max_int(&output_info, &max_output_int);
 
 	float max_output_float = (float)max_output_int;
 	// printf("%f\n", max_output_float);
@@ -239,7 +239,7 @@ void main() {
 	free(sample);
 }
 
-void find_max_int(struct wav_info* w, int* max_int) 
+void local_find_max_int(struct wav_info* w, int* max_int) 
 {
 
 	/* determine maximum integer expressable in w.bits_per_sample bits,

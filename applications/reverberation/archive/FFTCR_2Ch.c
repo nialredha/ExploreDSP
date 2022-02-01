@@ -3,7 +3,7 @@
 	http://www.jackcampbellsounds.com/2017/06/25/conv3.html
 	https://www.youtube.com/watch?v=fYggIQTaVx4	
 
-	To build: gcc FFTCR_2Ch.c ../../modules/filters.c ../../modules/wav.c ../../modules/fft.c -lm
+	To build: gcc FFTCR_2Ch.c ../../../modules/filters.c ../../../modules/wav.c ../../../modules/fft.c ../../../modules/complex.c -lm
 	To run: ./a.out
 */
 
@@ -11,17 +11,17 @@
 #include <math.h>
 #include <time.h>
 
-#include "../../modules/filters.h"
-#include "../../modules/wav.h"
+#include "../../../modules/filters.h"
+#include "../../../modules/wav.h"
 
-void find_max_int(struct wav_info* w, int* max_int);
+void local_find_max_int(struct wav_info* w, int* max_int);
 /* Find the max integer a wav file can express - essentially figure out a wav
    file's bit-depth to determine the largest integer expressable. 
    
    For example, if the bit depth was 16 bits, the maximum integer expressable
    would be 32767 */
 
-int power_2_round(int num, int direction);
+int local_power_2_round(int num, int direction);
 /* round integer up or down to the nearest power of 2 */
 
 void print_to_binary(int value);
@@ -39,8 +39,8 @@ void main() {
 	struct wav_info impulse_info;
 
 	// set input and impulse file paths	
-    char* input_file = "data/input_signals/DeChaka_Instrumental.wav";
-	char* impulse_file = "data/impulse_responses/Highly_Damped_Large_Room.wav";
+    char* input_file = "../data/input_signals/DeChaka_Instrumental.wav";
+	char* impulse_file = "../data/impulse_responses/Highly_Damped_Large_Room.wav";
 
 	// open both the input and impulse file
     FILE* input = fopen(input_file,"rb");
@@ -76,8 +76,8 @@ void main() {
 
 	// determine the largest expressable integer by looking at the number of
 	// bits per sample located in the input / impulse _info structs.
-	find_max_int(&input_info, &max_input_int);
-	find_max_int(&impulse_info, &max_impulse_int);
+	local_find_max_int(&input_info, &max_input_int);
+	local_find_max_int(&impulse_info, &max_impulse_int);
 
 	// read the .wav integer data and store it in their respective 1D arrays
 	// where the first channel is stored in the first half of the array and 
@@ -278,7 +278,7 @@ void main() {
 	}
 
 	// set output file path and print the .wav file header info
-	char* output_file = "data/output_signals/FFTCR_2Ch_48kHz_IMPHighlyDampedLargeRoom.wav";	// filename to write to
+	char* output_file = "FFTCR_2Ch_48kHz_IMPHighlyDampedLargeRoom.wav";	// filename to write to
 	printf("\n");
 	printf("---------------------------------------------\n");
 	printf("Preparing to write to %s:\n",output_file);
@@ -297,7 +297,7 @@ void main() {
 	// compute the largest expressable integer based on the amount of bits
 	// per sample.
 	int max_output_int;
-	find_max_int(&output_info, &max_output_int);
+	local_find_max_int(&output_info, &max_output_int);
 
 	float max_output_float = (float)max_output_int;
 	//printf("%f\n", max_output_float);
@@ -342,7 +342,7 @@ void main() {
 
 }
 
-void find_max_int(struct wav_info* w, int* max_int) {
+void local_find_max_int(struct wav_info* w, int* max_int) {
 /* determine maximum integer expressable in w.bits_per_sample bits, assuming
 twos complement encoding of signed integers */
 
@@ -364,7 +364,7 @@ twos complement encoding of signed integers */
     }
 }
 
-int power_2_round(int num, int direction)
+int local_power_2_round(int num, int direction)
 {
 	/* round integer up or down to the nearest power of 2 */
 

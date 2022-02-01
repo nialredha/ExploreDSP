@@ -3,7 +3,7 @@
 	http://www.jackcampbellsounds.com/2017/06/25/conv3.html
 	https://www.youtube.com/watch?v=fYggIQTaVx4	
 
-	To build: gcc FFTCR.c ../../modules/filters.c ../../modules/wav.c ../../modules/fft.c -lm
+	To build: gcc FFTCR.c ../../../modules/filters.c ../../../modules/wav.c ../../../modules/fft.c ../../../modules/complex.c -lm
 	To run: ./a.out
 */
 
@@ -11,26 +11,26 @@
 #include <math.h>
 #include <time.h>
 
-#include "../../modules/filters.h"
-#include "../../modules/wav.h"
+#include "../../../modules/filters.h"
+#include "../../../modules/wav.h"
 
-void find_max_int(struct wav_info* w, int* max_int);
+void local_find_max_int(struct wav_info* w, int* max_int);
 /* Find the max integer a wav file can express - essentially figure out a wav
    file's bit-depth to determine the largest integer expressable. 
    
    For example, if the bit depth was 16 bits, the maximum integer expressable
    would be 32767 */
 
-void print_to_binary(int value);
-int power_2_round(int num, int direction);
+void local_print_to_binary(int value);
+int local_power_2_round(int num, int direction);
 
 void main() {
 
 	struct wav_info input_info;
 	struct wav_info impulse_info;
 
-    char* input_file = "data/input_signals/DeChaka_Instrumental.wav";
-	char* impulse_file = "data/impulse_responses/Going_Home.wav";
+    char* input_file = "../data/input_signals/DeChaka_Instrumental.wav";
+	char* impulse_file = "../data/impulse_responses/Going_Home.wav";
 
     FILE* input = fopen(input_file,"rb");
 	FILE* impulse = fopen(impulse_file, "rb");
@@ -60,8 +60,8 @@ void main() {
 	int16_t *impulse_idata;
 	impulse_idata = (int16_t *)malloc(sizeof(int16_t) * (impulse_info.num_samples*impulse_info.num_channels));
 
-	find_max_int(&input_info, &max_input_int);
-	find_max_int(&impulse_info, &max_impulse_int);
+	local_find_max_int(&input_info, &max_input_int);
+	local_find_max_int(&impulse_info, &max_impulse_int);
 
 	read_wav_data(&input_info, input_idata, input); 
 	read_wav_data(&impulse_info, impulse_idata, impulse); 
@@ -75,7 +75,7 @@ void main() {
 
 	size_t N = input_length + (impulse_length - 1);
 
-	size_t rd_N = power_2_round(N, 1);
+	size_t rd_N = local_power_2_round(N, 1);
 	input_length = rd_N - (impulse_length - 1);
 
 	Complex input_fdata;
@@ -167,7 +167,7 @@ void main() {
 		output_fdata.r[i] /= record + 1.0;	// "normalizing" the data
 	}
 
-	char* output_file = "data/output_signals/FFTCR_1Ch_IMPGoingHome.wav";	// filename to write to
+	char* output_file = "FFTCR_1Ch_IMPGoingHome.wav";	// filename to write to
 	printf("\n");
 	printf("---------------------------------------------\n");
 	printf("Preparing to write to %s:\n",output_file);
@@ -181,7 +181,7 @@ void main() {
     }
 
 	int max_output_int;
-	find_max_int(&output_info, &max_output_int);
+	local_find_max_int(&output_info, &max_output_int);
 
 	float max_output_float = (float)max_output_int;
 	//printf("%f\n", max_output_float);
@@ -217,7 +217,7 @@ void main() {
 
 }
 
-void find_max_int(struct wav_info* w, int* max_int) {
+void local_find_max_int(struct wav_info* w, int* max_int) {
 /* determine maximum integer expressable in w.bits_per_sample bits, assuming
 twos complement encoding of signed integers */
 
@@ -239,7 +239,7 @@ twos complement encoding of signed integers */
     }
 }
 
-int power_2_round(int num, int direction)
+int local_power_2_round(int num, int direction)
 {
 	/* round integer down to the nearest power of 2 */
 
@@ -290,7 +290,7 @@ int power_2_round(int num, int direction)
 	return rd_num;
 } 
 
-void print_to_binary(int value)
+void local_print_to_binary(int value)
 {
 	/* function used to help visualize how to round down / round up to the 
 	   nearest power of 2. 

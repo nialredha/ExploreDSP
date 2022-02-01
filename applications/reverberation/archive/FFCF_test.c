@@ -1,8 +1,8 @@
 #include <stdlib.h>
-#include "../../modules/filters.h"
-#include "../../modules/dataSim.h"
+#include "../../../modules/filters.h"
+#include "../../../modules/dataSim.h"
 
-// gcc FFCF_test.c ../../modules/filters.c ../../modules/dataSim.c ../../modules/fft.c -lm
+// gcc FFCF_test.c ../../../modules/filters.c ../../../modules/dataSim.c ../../../modules/fft.c ../../../modules/complex.c ../../../modules/wav.c -lm
 
 int main() 
 {
