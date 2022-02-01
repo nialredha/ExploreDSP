@@ -1,7 +1,12 @@
+#ifndef FILTERS_H_	// include guard
+#define FILTERS_H_
+
 #include <stdint.h>
 #include <stdio.h>
+#include <time.h>
 
 #include "fft.h"
+#include "wav.h"
 
 /* 
 	Module to digitally process wav signals using a variety of filters
@@ -43,6 +48,10 @@ void current_delay_line(delay_line *DL, float *output);
 void delete_delay_line(delay_line *DL);
 /* free all memory, clear all buffers... you know that sort of stuff. */
 
+void delay_line_main();
+/* sends input data through a delay line of user-defined length and writes 
+   the delayed data to a user-defined .wav */
+
 /* Delay Line End ***********************************************************/
 
 /* Feed-Forward Comb Filter *************************************************/
@@ -66,6 +75,10 @@ void step_ff_comb_filter(ff_comb_filter *FFCF, float input, float *output);
 void delete_ff_comb_filter(ff_comb_filter *FFCF);
 /* free all memory, clear all buffers... you know that sort of stuff. */
 
+void ff_comb_filter_main();
+/* sends input data through a feed-forward comb filter with user-defined
+   coefficients and writes the filtered data to a user-defined .wav */
+
 /* Feed-Forward Comb Filter End *********************************************/
 
 /* Feedback Comb Filter ****************************************************/
@@ -88,6 +101,10 @@ void step_fb_comb_filter(fb_comb_filter *FBCF, float input, float *output);
 void delete_fb_comb_filter(fb_comb_filter *FBCF);
 /* free all memory, clear all buffers... you know that sort of stuff. */
 
+void fb_comb_filter_main();
+/* sends input data through a feed-back comb filter with user-defined 
+   coefficients and writes the filtered data to a user-defined .wav */
+
 /* Feedback Comb Filter End *************************************************/
 
 /* Allpass Comb Filter ******************************************************/
@@ -107,6 +124,10 @@ void step_ap_comb_filter(ap_comb_filter *APCF, float input, float *output);
 
 void delete_ap_comb_filter(ap_comb_filter *APCF);
 /* free all memory, clear all buffers... you know that sort of stuff. */
+
+void ap_comb_filter_main();
+/* sends input data through an all-pass comb filter with user-defined
+   coefficients and writes the filtered data to a user-defined .wav */
 
 /* Allpass Comb Filter End *************************************************/
 
@@ -128,6 +149,10 @@ void step_shroeder_reverberator(shroeder_reverberator *SR, float input, float *o
 void delete_shroeder_reverberator(shroeder_reverberator *SR);
 /* free all memory, clear all buffers... you know that sort of stuff. */
 
+void shroeder_reverberator_main();
+/* sends input data through a shroeder reverberator with user-define 
+   coefficients and writes the filtered data to a user-defined .wav */
+
 /* Shroeder Reverberator End ***********************************************/
 
 /* Convolution Reverb ******************************************************/
@@ -138,11 +163,13 @@ void overlap_add_convolution(float* input, float* impulse, float* output,
 void fft_convolution(Complex *input, Complex *impulse, Complex *output,
 							  int input_length, int impulse_length, int rd_N);
 
+int power_2_round(int num, int direction);
+/* round integer up or down to the nearest power of 2 */
+
+void convolution_reverb_main();
+/* convolves input data with a user-defined impulse response and writes the
+   convolved data to a user-define .wav */
+
 /* Convolution Reverb End **************************************************/
 
-/* General Tools ************************************************************/
-
-// void complex_multiply(Complex *a, Complex *b, Complex *o, int length);
-
-/* General Tools End ********************************************************/
-
+#endif // FILTERS_H_
