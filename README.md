@@ -41,6 +41,9 @@ While the website I downloaded it from no longer exists, modules/wav.h has
 more information on who wrote it. 
 
 ## Left To Do
-1. Optimization for FFT multiple calls of the same data size
-2. Create complex number library and remove complex struct from fft.h and
-comlex multiply from filters module
+1. Clean audio\_processor.c by placing filter main functions into the filters
+module and all WAV IO into the WAV module.
+2. Move all files other than audio\_processor.c in the reverberation dir to
+an archived sub-dir.
+3. Rename audio\_processor.c
+4. Optimization for FFT multiple calls of the same data size
