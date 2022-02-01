@@ -142,7 +142,7 @@ void fft_convolution(Complex *input, Complex *impulse, Complex *output,
 
 /* General Tools ************************************************************/
 
-void complex_multiply(Complex *a, Complex *b, Complex *o, int length);
+// void complex_multiply(Complex *a, Complex *b, Complex *o, int length);
 
 /* General Tools End ********************************************************/
 

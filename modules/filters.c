@@ -1,7 +1,6 @@
 #include <stdlib.h>
 
 #include "filters.h"
-#include "fft.h"
 
 /* Delay Line ***************************************************************/
 
@@ -396,7 +395,7 @@ void fft_convolution(Complex *input, Complex *impulse, Complex *output,
 /* Convolution Reverb End ***************************************************/
 
 /* General Tools ************************************************************/
-
+/*
 void complex_multiply(Complex *a, Complex *b, Complex *o, int length)
 {
 	for (int i=0; i<length; i++)
@@ -405,5 +404,6 @@ void complex_multiply(Complex *a, Complex *b, Complex *o, int length)
 		o->i[i] = (a->r[i]*b->i[i]) + (a->i[i]*b->r[i]);
 	}		
 }
+*/
 
 /* General Tools End *******************************************************/

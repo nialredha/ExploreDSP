@@ -1,6 +1,8 @@
 #ifndef FFT_H_	// include guard
 #define FFT_H_
 
+#include "complex.h"
+
 /* Module with basic DFT, FFT, and IFFT. Supports both real and complex inputs
    and only floating point. 
 */ 
@@ -9,11 +11,13 @@
 // I don't see the advantage of having them accept real inputs. Need to think
 // about this. 
 
+/*
 typedef struct Complex
 {
 	float* r;	// real component
 	float* i;	// imaginary component
 } Complex;
+*/
 
 // Function Declarations 
 
