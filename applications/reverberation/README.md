@@ -35,8 +35,7 @@ FFTCR ---- Fast Fourier Transform Convolution Reverb
 ## TODO
 1. Optimize fast convolution and the FFT (e.g precompile bit-reversed indexes 
    for multiple FFT calls)
-2. Run benchmarks on FFT
-3. Truly understand why multiplication in frequency domain is equivalent to a
+2. Truly understand why multiplication in frequency domain is equivalent to a
    convolution in time domain.  
 
 ## Next Steps
