@@ -857,19 +857,23 @@ int power_2_round(int num, int direction) {
 	if (direction == 1)
 	{
 		rd_num = 1 << shift + 1;
+		/*
 		printf("\n");
 		printf("-----------------------------------\n");
 		printf("%d rounded up to nearest power of 2 = %d\n", original_num, rd_num);
 		printf("-----------------------------------\n");
+		*/
 	}
 	// Round down
 	else if (direction == -1)
 	{
 		rd_num = 1 << shift;
+		/*
 		printf("\n");
 		printf("-----------------------------------\n");
 		printf("%d rounded down to nearest power of 2 = %d\n", original_num, rd_num);
 		printf("-----------------------------------\n");
+		*/
 	}
 
 	return rd_num;
@@ -986,7 +990,7 @@ void convolution_reverb_main() {
 						input.num_samples, impulse.num_samples, 
 						rd_N/input.num_channels);
 		stop = clock();
-		printf("Channel %d Convoluted Successfully!\n", c+1);
+		printf("Channel %d Convolved Successfully!\n", c+1);
 		// compute the amount of computation time to run the fast convolution and
 		// print the run time.
 		cpu_time_used = ((double)(stop - start)) / CLOCKS_PER_SEC;
