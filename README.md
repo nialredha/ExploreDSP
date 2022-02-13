@@ -41,6 +41,7 @@ While the website I downloaded it from no longer exists, modules/wav.h has
 more information on who wrote it. 
 
 ## Left To Do
-1. Rename audio\_processor.c
-2. Optimization for FFT multiple calls of the same data size
-3. Benchmark FFT
+1. Re-write WAV module from scratch
+2. Rename audio\_processor.c
+3. Optimization for FFT multiple calls of the same data size
+4. Benchmark FFT
