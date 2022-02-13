@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "new_wav.h"
+#include "wav.h"
 
 int POINTING_AT_DATA = 0;		// used to determine if read_wav_info was called
 

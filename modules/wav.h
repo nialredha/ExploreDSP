@@ -1,5 +1,5 @@
-#ifndef NEW_WAV_H_
-#define NEW_WAV_H_
+#ifndef WAV_H_
+#define WAV_H_
 
 #include <stdint.h>
 #include <stdio.h>
@@ -68,4 +68,4 @@ void find_max_int(struct wav_info* w, int* max_int);
 void normalize_data(float *fdata, int N);
 /* finding maximum output value to "normalize" */
 
-#endif // NEW_WAV_H
+#endif // WAV_H
