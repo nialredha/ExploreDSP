@@ -1,7 +1,6 @@
 # Usage:
 # make			# compile final executable binary
-# make run_fft	# run fft executable
-# make run_ifft	# run ifft executable
+# make run		# run reverb executable
 # make clean	# remove ALL binaries
 
 BUILD_DIR = build/
