@@ -35,11 +35,11 @@ understand.
 ## Important Note 
 This is in regard to both the modules/wav.h and modules/wav.c files.
 
-I used a barebones wav module - written by someone else - for reading and writing 
-wav files and added more functionality on top of it to allow me to read and store  
-wav data and have more IO abstraction. While the website I downloaded the original 
-module from seems to no longer exists, modules/wav.h has more information on who 
-wrote it. 
+I used a barebones wav module - written by someone else - for reading and writing
+wav files and added more functionality on top of it to allow me to read and store
+wav data and have more IO abstraction. While the website I downloaded the original
+module from seems to no longer exists, modules/wav.h has more information on who
+wrote it.
 
 ## Left To Do
 1. Rename audio\_processor.c
