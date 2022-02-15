@@ -29,19 +29,19 @@ understanding the fourier transform, discrete fourier transform, fast fourier
 transform algorithm, and the inverse fourier transform, with intentions to
 develop a demo script and README that could serve as a reference for anyone 
 else trying to understand. This is currently on the back-burner, since there
-are a couple key characteristics of the FFT/IFFT I do not fully understand.
+are a couple key characteristics of the FFT/IFFT I haven't taken the time to
+understand.
 
 ## Important Note 
 This is in regard to both the modules/wav.h and modules/wav.c files.
 
-I did not write the wav module for reading and writing .wav files, but
-tweaked it to allow me to read and store wav data. The reason I didn't write 
-my own is simply because I liked this one much better than what I had written. 
-While the website I downloaded it from no longer exists, modules/wav.h has 
-more information on who wrote it. 
+I used a barebones wav module - written by someone else - for reading and writing 
+wav files and added more functionality on top of it to allow me to read and store  
+wav data and have more IO abstraction. While the website I downloaded the original 
+module from seems to no longer exists, modules/wav.h has more information on who 
+wrote it. 
 
 ## Left To Do
-1. Re-write WAV module from scratch
-2. Rename audio\_processor.c
-3. Optimization for FFT multiple calls of the same data size
-4. Benchmark FFT
+1. Rename audio\_processor.c
+2. Optimization for FFT multiple calls of the same data size
+3. Benchmark FFT
