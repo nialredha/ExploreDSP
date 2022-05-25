@@ -4,14 +4,15 @@ the FFT and IFFT, to create a reverb effect. I would also like it to be user-
 friendly.
 
 Currently: I met my goal :)
-1. I implemented a delay line and comb filters to make a Schroeder reverberator. 
+Here is a list of things I implemented:
+1. Delay line and comb filters to make a Schroeder reverberator. 
 This was generally for fun, but also to figure out WAV file IO.
-2. I implemented an overlap-add convolution to create a reverb effect - this
+2. Overlap-add convolution to create a reverb effect - this
 algorithm is fairly expensive but was meant as a stepping stone to the fast
 convolution reverb. 
-3. I implemented a fast convolution, using the FFT and IFFT, to create a
+3. Fast convolution, using the FFT and IFFT, to create a
 reverb effect.
-4. I created a user-friendly program titled audio\_processor.c that 
+4. User-friendly program titled audio\_processor.c that 
 consolidates everything I have done. 
 
 ## Acronyms 
